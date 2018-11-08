@@ -1,0 +1,56 @@
+
+
+<div>
+    <h1>Sensor information retreival</h1>
+
+	<div class = "input">
+        <label class="input-field">Sensor ID: 
+        <input type="text" ng-model="sensorID" ng-change="searchSensor()"></label>
+    </div>
+	<div class = "input">
+        <label class="input-field">Sensor type: 
+        <input type="text" ng-model="sensorType" ng-change="searchSensor()" ></label>
+    </div>
+	<div class = "input">
+        <label class="input-field">Installed before:
+        <input type="text" ng-model="install" ng-change="searchSensor()"></label>
+    </div>
+	<div class = "input">
+        <label class="input-field">Removed after
+        <input type="text" ng-model="remove" ng-change="searchSensor()"></label>
+    </div>
+<!-- 	<div class = "button">
+        <button ng-click="searchSensor(sensorType)">Search</label>
+    </div>
+ -->
+    <div ng-if="sensorType.length !== 0 || sensorID.length !== 0">
+	    <div class = "result" ng-if="sensorList.content[0] !== null && sensorList.content.length !== 0">
+    		<table cellspacing="0">
+				<thead>
+					<tr>
+						<td>Sensor ID</td>
+						<td>Sensor Type</td>
+						<td>Position</td>
+						<td>Install date</td>
+						<td>Sampling Rate</td>
+						<td>Sensitivity</td>
+						<td>Description</td>
+					</tr>
+				</thead>
+				<tbody ng-repeat="sensor in sensorList.content">
+					<tr class="odd">
+						<td>{{sensor.sensor_id}}</td>
+						<td>{{sensor.sensor_type}}</td>
+						<td>{{sensor.position_description}}</td>
+						<td>{{sensor.install}}</td>
+						<td>{{sensor.sampling_rate}}</td>
+						<td>{{sensor.sensitivity}}</td>
+						<td>{{sensor.description}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class = "noResult" ng-if="sensorList.content[0] === null || sensorList.content.length === 0">
+		    <p>"No matching results..."</p>
+		</div>
+</div>

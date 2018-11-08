@@ -1,0 +1,44 @@
+/*
+CSS for the CS142 project #4 Problem #2 states component
+
+Since CSS uses a global name space for classes we should use names starting with
+cs142-states- here.
+*/
+
+.input {
+	font-family: Tahoma;
+	padding-bottom: 20px;
+}
+
+.result {
+    font-family: Tahoma;
+    border: 1px dashed #722b00;
+    line-height: 1;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 2px;
+    padding-right: 2px;
+    display: inline-block;
+}
+
+.noResult {
+	font-family: Tahoma;
+	color: gray;
+}
+
+.header {
+    border-top: 3px solid #cccccc;
+    border-bottom: 3px solid #cccccc;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    color: black;
+    text-align: center;
+    background-color: azure;
+    font-family: Tahoma;
+    font-size: 30px;
+    font-weight: bold;
+    background-image: url(SU_Seal_Red.png);
+    background-repeat: no-repeat;
+    background-position: left;
+    background-size: contain;
+}

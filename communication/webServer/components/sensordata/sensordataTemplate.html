@@ -1,0 +1,42 @@
+
+
+<div>
+    <h1>Sensor data retreival</h1>
+
+	<div class = "input">
+        <label class="input-field">Sensor ID: 
+        <input type="text" ng-model="sensorID" ></label>
+    </div>
+	<div class = "input">
+        <label class="input-field">Begin timestamp:
+        <input type="text" ng-model="begin" ></label>
+    </div>
+	<div class = "input">
+        <label class="input-field">End timestamp
+        <input type="text" ng-model="end" ></label>
+    </div>
+	<div class = "button">
+        <button ng-click="searchSensorData()">Search</label>
+    </div>
+
+    <div ng-if="sensorID.length !== 0 && month.length !== 0 ">
+	    <div class = "result" ng-if="sensorDataList.content[0] !== null && sensorDataList.content.length !== 0 && sensorDataList.length !== 0 ">
+    		<table cellspacing="0">
+				<thead>
+					<tr>
+						<td>Timestamp</td>
+						<td>Data</td>
+					</tr>
+				</thead>
+				<tbody ng-repeat="sensor in sensorDataList.content">
+					<tr class="odd">
+						<td>{{sensor.event_time}}</td>
+						<td>{{sensor.data}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class = "noResult" ng-if="sensorDataList.content[0] === null || sensorDataList.content.length === 0 || sensorDataList.length === 0 ">
+		    <p>"No matching results..."</p>
+		</div>
+</div>

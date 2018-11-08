@@ -1,0 +1,36 @@
+<div ng-hide="registrationMode">
+	<form name="loginform" ng-submit="login()">        
+	    Username: <input type="text" name="username" ng-model="username" /><br />
+	    Password: <input type="password" name="pw" ng-model="pw" /><br />
+		<input type="submit" value="Submit"/>
+	</form>
+	<!-- <button ng-click="registration()">Registration</button> -->
+	<div>
+		<p>{{loginMessage}}</p>
+	</div>
+</div>
+
+
+
+<!-- <div ng-hide="!registrationMode">
+	<form name="form" ng-submit="register()">
+		<h3>Registration Form</h3>
+		<ul>
+		    <li>Login name: <input type="text" name="loginname" ng-model="loginname" required maxlength="20" minlength="3" /><br /></li>
+		    <li>Password: <input type="password" name="password" ng-model="password" required maxlength="20" minlength="4" /><br /></li>
+		    <li>Password(repeat): <input type="password" name="passwordCheck" ng-model="passwordCheck" required maxlength="20" minlength="4" /><br /></li>
+		    <li>First name: <input type="text" name="firstname" ng-model="firstname" required /><br /></li>
+		    <li>Last name: <input type="text" name="lastname" ng-model="lastname" required /><br /></li>
+		    <li>Location: <input type="text" name="location" ng-model="location" /><br /></li>
+		    <li>Description: <input type="text" name="description" ng-model="description" /><br /></li>
+		    <li>Occupation: <input type="text" name="occupation" ng-model="occupation" /><br /></li>
+		    <br />
+	    </ul>
+		<input type="submit" value="Register Me"/>
+	</form>
+	<button ng-click="cancelRegistration()">Cancel</button>
+	<div>
+		<p>{{registerResultMessage}}</p>
+	</div>
+</div> -->
+

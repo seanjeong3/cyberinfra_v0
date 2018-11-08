@@ -1,0 +1,58 @@
+/*
+CSS for the CS142 project #4 Problem #2 states component
+
+Since CSS uses a global name space for classes we should use names starting with
+cs142-states- here.
+*/
+
+.toolbar {
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    color: black;
+    text-align: center;
+    background-color: lightgray;
+    
+}
+
+button {
+    background-color: gray;
+    font-family: Tahoma;
+    font-size: 15px;
+    font-weight: bold;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+
+a:link {
+    text-decoration: none;
+    color: inherit;
+}
+
+table {
+    font-family: Tahoma;
+    font-size: 13px;
+    color: black;
+}
+
+thead {
+    color: white;
+    background: #687291;
+    font-weight: bold;
+}
+
+td {
+    border-bottom: 1px solid white;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.odd {
+    background: #dfe1e7;
+}
+
+.even {
+    background: #eeeff2;
+}

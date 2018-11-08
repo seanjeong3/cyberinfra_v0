@@ -1,0 +1,16 @@
+{
+	"sensor_id":"utestsensor",
+	"N":"u158ch0",
+	"T":"Sensor",
+	"sensor_type":"strain gauge",
+	"description":"new strain board, gain 1000",
+	"output":"strain",
+	"output_uom":"micro strain",
+	"install":"2013-10-01 00:00:00",
+	"sampling_rate":100,
+	"local_coordinate":"-42,8",
+	"conversion_factor":0.029064178,
+	"FENode":"1028",
+	"target_object":"eaf9d5c7-7c5b-11e6-8546-3c15c2e54ea0",
+	"note":"quarter bridge, GF =2.1, NA 3"
+}

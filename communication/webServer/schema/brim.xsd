@@ -1,0 +1,3176 @@
+﻿<xs:schema id="openbrim3" xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:sml="http://www.opengis.net/sensorml/2.0"
+           xmlns:swe="http://www.opengis.net/swe/2.0"
+           xmlns:gml="http://www.opengis.net/gml/3.2"
+           xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" 
+           xmlns:xerces="http://xerces.apache.org" 
+           elementFormDefault="qualified" vc:minVersion="1.1">
+
+    <xs:import namespace="http://www.opengis.net/sensorml/2.0" 
+               schemaLocation="http://schemas.opengis.net/sensorML/2.0/sensorML.xsd"/>
+    <xs:import namespace="http://www.opengis.net/swe/2.0" 
+            schemaLocation="http://schemas.opengis.net/sweCommon/2.0/swe.xsd"/>
+    <xs:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+
+    <xs:element name="O" type="Project"></xs:element>
+	<xs:complexType name="Object" abstract="true" mixed="false" >
+				<!-- <xs:attribute name="N" type="xs:string"/>
+				<xs:attribute name="X" type="xs:string"/>
+				<xs:attribute name="Y" type="xs:string"/>
+				<xs:attribute name="Z" type="xs:string"/>
+				<xs:attribute name="RX" type="xs:string"/>
+				<xs:attribute name="RY" type="xs:string"/>
+				<xs:attribute name="RZ" type="xs:string"/>
+				<xs:attribute name="AX" type="xs:string"/>
+				<xs:attribute name="AY" type="xs:string"/>
+				<xs:attribute name="AZ" type="xs:string"/>
+				<xs:attribute name="Alignment" type="xs:string"/>
+				<xs:attribute name="AlignH" type="xs:string"/>
+				<xs:attribute name="AlignV" type="xs:string"/>
+				<xs:attribute name="AlignT" type="xs:string"/> -->
+	</xs:complexType>
+	<xs:complexType name="Project" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="O" minOccurs="0" maxOccurs="unbounded" >
+						<xs:alternative test="@T='Group'" type="Group" />
+                        <xs:alternative test="@T='Line'" type="Line" />
+						<xs:alternative type="xs:error" />
+					</xs:element>
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='Alignment'" type="ParamAlignment"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<!-- <xs:attribute name="Alignment" type="xs:string"/> -->
+				<xs:attribute name="T" type="xs:string" fixed="Project" use="required"/>
+				<xs:assert test="not(count(P[@N='Alignment']) gt 0 and @Alignment)" xerces:message="Parameter Alignment can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Unit" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='IsGeometry'" type="ParamIsGeometry"/>
+						<xs:alternative test="@N='Length'" type="ParamLength"/>
+						<xs:alternative test="@N='Force'" type="ParamForce"/>
+						<xs:alternative test="@N='Angle'" type="ParamAngle"/>
+						<xs:alternative test="@N='Temperature'" type="ParamTemperature"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="IsGeometry" type="xs:string"/>
+				<xs:attribute name="Length" type="xs:string"/>
+				<xs:attribute name="Force" type="xs:string"/>
+				<xs:attribute name="Angle" type="xs:string"/>
+				<xs:attribute name="Temperature" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="Unit" use="required"/>
+				<xs:assert test="not(count(P[@N='IsGeometry']) gt 0 and @IsGeometry)" xerces:message="Parameter IsGeometry can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Length']) gt 0 and @Length)" xerces:message="Parameter Length can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Force']) gt 0 and @Force)" xerces:message="Parameter Force can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Angle']) gt 0 and @Angle)" xerces:message="Parameter Angle can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Temperature']) gt 0 and @Temperature)" xerces:message="Parameter Temperature can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Material" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<!--  <xs:alternative test="@N='IsGeometry'" type="ParamIsGeometry"/>  -->
+                        <xs:alternative test="@N='Symmetricity'" type="ParamSymmetricity"/>
+                        <xs:alternative test="@N='TemperatureDependency'" type="ParamTemperatureDependency"/>
+                        <xs:alternative test="@N='ShearModulus'" type="ParamShearModulus"/>
+                        <xs:alternative test="@N='ModalDampingRatio'" type="ParamModalDampingRatio"/>
+                        <xs:alternative test="@N='EffectiveYieldStress'" type="ParamEffectiveYieldStress"/>
+                        <xs:alternative test="@N='EffectiveUltimateStress'" type="ParamEffectiveUltimateStress"/>
+                        <xs:alternative test="@N='ViscousDampingMass'" type="ParamViscousDampingMass"/>
+                        <xs:alternative test="@N='ViscousDampingStiffness'" type="ParamViscousDampingStiffness"/>
+						<xs:alternative test="@N='E'" type="ParamE"/>
+						<xs:alternative test="@N='Nu'" type="ParamNu"/>
+						<xs:alternative test="@N='d'" type="Paramd"/>
+						<xs:alternative test="@N='a'" type="Parama"/>
+						<xs:alternative test="@N='Fy'" type="ParamFy"/>
+						<xs:alternative test="@N='Fu'" type="ParamFu"/>
+						<xs:alternative test="@N='Fc28'" type="ParamFc28"/>
+						<xs:alternative test="@N='Type'" type="ParamType"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<!--  <xs:attribute name="IsGeometry" type="xs:string"/>
+				<xs:attribute name="E" type="xs:string"/>
+				<xs:attribute name="Nu" type="xs:string"/>
+				<xs:attribute name="d" type="xs:string"/>
+				<xs:attribute name="a" type="xs:string"/>
+				<xs:attribute name="Fy" type="xs:string"/>
+				<xs:attribute name="Fu" type="xs:string"/>
+				<xs:attribute name="Fc28" type="xs:string"/>
+				<xs:attribute name="Type" type="xs:string"/>  -->
+				<xs:attribute name="T" type="xs:string" fixed="Material" use="required"/>
+				<!-- <xs:assert test="not(count(P[@N='IsGeometry']) gt 0 and @IsGeometry)" xerces:message="Parameter IsGeometry can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='E']) gt 0 and @E)" xerces:message="Parameter E can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Nu']) gt 0 and @Nu)" xerces:message="Parameter Nu can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='d']) gt 0 and @d)" xerces:message="Parameter d can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='a']) gt 0 and @a)" xerces:message="Parameter a can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Fy']) gt 0 and @Fy)" xerces:message="Parameter Fy can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Fu']) gt 0 and @Fu)" xerces:message="Parameter Fu can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Fc28']) gt 0 and @Fc28)" xerces:message="Parameter Fc28 can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Type']) gt 0 and @Type)" xerces:message="Parameter Type can be specified either as P node or attribute on object but not both."/> -->
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Group" mixed="false" >
+        <xs:complexContent>
+            <xs:extension base="Object">
+                <xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="O" minOccurs="0" maxOccurs="unbounded" >
+                        <xs:alternative test="@T='Group'" type="Group" />
+                        <xs:alternative test="@T='Unit'" type="Unit" />
+                        <xs:alternative test="@T='Material'" type="Material" />
+                        <xs:alternative test="@T='Alignment'" type="Alignment" />
+                        <xs:alternative test="@T='Point'" type="Point" />
+                        <xs:alternative test="@T='Surface'" type="Surface" />
+                        <xs:alternative test="@T='Circle'" type="Circle" />
+                        <xs:alternative test="@T='Volume'" type="Volume" />
+                        <xs:alternative test="@T='Line'" type="Line" />
+                        <xs:alternative test="@T='Section'" type="Section" />
+                        <xs:alternative test="@T='Shape'" type="Shape" />
+                        <xs:alternative test="@T='Rebar'" type="Rebar" />
+                        <xs:alternative test="@T='RebarLineLayout'" type="RebarLineLayout" />
+                        <xs:alternative test="@T='RebarCircularLayout'" type="RebarCircularLayout" />
+                        <xs:alternative test="@T='TendonLayout'" type="TendonLayout" />
+                        <xs:alternative test="@T='Repeat'" type="Repeat" />
+                        <xs:alternative test="@T='Circular'" type="Circular" />
+                        <xs:alternative test="@T='Spiral'" type="Spiral" />
+                        <xs:alternative test="@T='Straight'" type="Straight" />
+                        <xs:alternative test="@T='CrossSection'" type="CrossSection" />
+                        <xs:alternative test="@T='CrossSectionSegment'" type="CrossSectionSegment" />
+                        <xs:alternative test="@T='ElevationPoint'" type="ElevationPoint" />
+                        <xs:alternative test="@T='Node'" type="Node" />
+                        <xs:alternative test="@T='FELine'" type="FELine" />
+                        <xs:alternative test="@T='FESurface'" type="FESurface" />
+                        <xs:alternative test="@T='AnalysisCase'" type="AnalysisCase" />
+                        <xs:alternative test="@T='SingleAxisAccelerometer'" type="SingleAxisAccelerometer" />
+                        <xs:alternative test="@T='TriAxisAccelerometer'" type="TriAxisAccelerometer" />
+                        <xs:alternative test="@T='Thermister'" type="Thermistor" />
+                        <xs:alternative test="@T='Camera'" type="Camera" />
+                        <xs:alternative test="@T='SensorMetadata'" type="SensorMetadata" />
+                        <xs:alternative test="@T='SensorLocation'" type="SensorLocation" />
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="T" type="xs:string" fixed="Group" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Repeat" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="O" minOccurs="0" maxOccurs="unbounded" >
+						<xs:alternative test="@T='Surface'" type="Surface" />
+						<xs:alternative test="@T='Circle'" type="Circle" />
+						<xs:alternative test="@T='Point'" type="Point" />
+						<xs:alternative test="@T='Line'" type="Line" />
+						<xs:alternative test="@T='Volume'" type="Volume" />
+						<xs:alternative test="@T='Group'" type="Group" />
+						<xs:alternative type="xs:error" />
+					</xs:element>
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='IsGeometry'" type="ParamIsGeometry"/>
+						<xs:alternative test="@N='S'" type="ParamS"/>
+						<xs:alternative test="@N='E'" type="ParamE"/>
+						<xs:alternative test="@N='I'" type="ParamI"/>
+						<xs:alternative test="@N='CTRL'" type="ParamCTRL"/>
+						<xs:alternative test="@N='index'" type="Paramindex"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="IsGeometry" type="xs:string"/>
+				<xs:attribute name="S" type="xs:string"/>
+				<xs:attribute name="E" type="xs:string"/>
+				<xs:attribute name="I" type="xs:string"/>
+				<xs:attribute name="CTRL" type="xs:string"/>
+				<xs:attribute name="index" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="Repeat" use="required"/>
+				<xs:assert test="not(count(P[@N='IsGeometry']) gt 0 and @IsGeometry)" xerces:message="Parameter IsGeometry can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='S']) gt 0 and @S)" xerces:message="Parameter S can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='E']) gt 0 and @E)" xerces:message="Parameter E can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='I']) gt 0 and @I)" xerces:message="Parameter I can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='CTRL']) gt 0 and @CTRL)" xerces:message="Parameter CTRL can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='index']) gt 0 and @index)" xerces:message="Parameter index can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CutPlane" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='IsGeometry'" type="ParamIsGeometry"/>
+						<xs:alternative test="@N='X'" type="ParamX"/>
+						<xs:alternative test="@N='Y'" type="ParamY"/>
+						<xs:alternative test="@N='Z'" type="ParamZ"/>
+						<xs:alternative test="@N='RX'" type="ParamRX"/>
+						<xs:alternative test="@N='RY'" type="ParamRY"/>
+						<xs:alternative test="@N='RZ'" type="ParamRZ"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="IsGeometry" type="xs:string"/>
+				<!-- <xs:attribute name="X" type="xs:string"/>
+				<xs:attribute name="Y" type="xs:string"/>
+				<xs:attribute name="Z" type="xs:string"/>
+				<xs:attribute name="RX" type="xs:string"/>
+				<xs:attribute name="RY" type="xs:string"/>
+				<xs:attribute name="RZ" type="xs:string"/>  -->
+				<xs:attribute name="T" type="xs:string" fixed="CutPlane" use="required"/>
+				<xs:assert test="not(count(P[@N='IsGeometry']) gt 0 and @IsGeometry)" xerces:message="Parameter IsGeometry can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='X']) gt 0 and @X)" xerces:message="Parameter X can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Y']) gt 0 and @Y)" xerces:message="Parameter Y can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Z']) gt 0 and @Z)" xerces:message="Parameter Z can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='RX']) gt 0 and @RX)" xerces:message="Parameter RX can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='RY']) gt 0 and @RY)" xerces:message="Parameter RY can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='RZ']) gt 0 and @RZ)" xerces:message="Parameter RZ can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="GeoData" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="O" minOccurs="0" maxOccurs="unbounded" >
+						<xs:alternative test="@T='GeoPoint'" type="GeoPoint" />
+						<xs:alternative test="@T='GeoElev'" type="GeoElev" />
+						<xs:alternative test="@T='GeoTri'" type="GeoTri" />
+						<xs:alternative type="xs:error" />
+					</xs:element>
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="T" type="xs:string" fixed="GeoData" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="GeoPoint" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='Lat'" type="ParamLat"/>
+						<xs:alternative test="@N='Lng'" type="ParamLng"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="Lat" type="xs:string"/>
+				<xs:attribute name="Lng" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="GeoPoint" use="required"/>
+				<xs:assert test="not(count(P[@N='Lat']) gt 0 and @Lat)" xerces:message="Parameter Lat can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Lng']) gt 0 and @Lng)" xerces:message="Parameter Lng can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="GeoElev" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='Lat'" type="ParamLat"/>
+						<xs:alternative test="@N='Lng'" type="ParamLng"/>
+						<xs:alternative test="@N='Elev'" type="ParamElev"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="Lat" type="xs:string"/>
+				<xs:attribute name="Lng" type="xs:string"/>
+				<xs:attribute name="Elev" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="GeoElev" use="required"/>
+				<xs:assert test="not(count(P[@N='Lat']) gt 0 and @Lat)" xerces:message="Parameter Lat can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Lng']) gt 0 and @Lng)" xerces:message="Parameter Lng can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Elev']) gt 0 and @Elev)" xerces:message="Parameter Elev can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="GeoTri" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='P1'" type="ParamP1"/>
+						<xs:alternative test="@N='P2'" type="ParamP2"/>
+						<xs:alternative test="@N='P3'" type="ParamP3"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="P1" type="xs:string"/>
+				<xs:attribute name="P2" type="xs:string"/>
+				<xs:attribute name="P3" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="GeoTri" use="required"/>
+				<xs:assert test="not(count(P[@N='P1']) gt 0 and @P1)" xerces:message="Parameter P1 can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='P2']) gt 0 and @P2)" xerces:message="Parameter P2 can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='P3']) gt 0 and @P3)" xerces:message="Parameter P3 can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Alignment" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="O" minOccurs="0" maxOccurs="unbounded" >
+						<xs:alternative test="@T='Circular'" type="Circular" />
+						<xs:alternative test="@T='Spiral'" type="Spiral" />
+						<xs:alternative test="@T='Straight'" type="Straight" />
+						<xs:alternative test="@T='CrossSection'" type="CrossSection" />
+						<xs:alternative test="@T='ElevationPoint'" type="ElevationPoint" />
+						<xs:alternative type="xs:error" />
+					</xs:element>
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='Station'" type="ParamStation"/>
+						<xs:alternative test="@N='Azimuth'" type="ParamAzimuth"/>
+						<xs:alternative test="@N='Lat'" type="ParamLat"/>
+						<xs:alternative test="@N='Lng'" type="ParamLng"/>
+						<xs:alternative test="@N='Elev'" type="ParamElev"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="Station" type="xs:string"/>
+				<xs:attribute name="Azimuth" type="xs:string"/>
+				<xs:attribute name="Lat" type="xs:string"/>
+				<xs:attribute name="Lng" type="xs:string"/>
+				<xs:attribute name="Elev" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="Alignment" use="required"/>
+				<xs:assert test="not(count(P[@N='Station']) gt 0 and @Station)" xerces:message="Parameter Station can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Azimuth']) gt 0 and @Azimuth)" xerces:message="Parameter Azimuth can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Lat']) gt 0 and @Lat)" xerces:message="Parameter Lat can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Lng']) gt 0 and @Lng)" xerces:message="Parameter Lng can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Elev']) gt 0 and @Elev)" xerces:message="Parameter Elev can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Circular" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='IsGeometry'" type="ParamIsGeometry"/>
+						<xs:alternative test="@N='Length'" type="ParamLength"/>
+						<xs:alternative test="@N='Radius'" type="ParamRadius"/>
+						<xs:alternative test="@N='Direction'" type="ParamDirection"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="IsGeometry" type="xs:string"/>
+				<xs:attribute name="Length" type="xs:string"/>
+				<xs:attribute name="Radius" type="xs:string"/>
+				<xs:attribute name="Direction" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="Circular" use="required"/>
+				<xs:assert test="not(count(P[@N='IsGeometry']) gt 0 and @IsGeometry)" xerces:message="Parameter IsGeometry can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Length']) gt 0 and @Length)" xerces:message="Parameter Length can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Radius']) gt 0 and @Radius)" xerces:message="Parameter Radius can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Direction']) gt 0 and @Direction)" xerces:message="Parameter Direction can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Spiral" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='IsGeometry'" type="ParamIsGeometry"/>
+						<xs:alternative test="@N='Length'" type="ParamLength"/>
+						<xs:alternative test="@N='Direction'" type="ParamDirection"/>
+						<xs:alternative test="@N='RadiusStart'" type="ParamRadiusStart"/>
+						<xs:alternative test="@N='RadiusEnd'" type="ParamRadiusEnd"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="IsGeometry" type="xs:string"/>
+				<xs:attribute name="Length" type="xs:string"/>
+				<xs:attribute name="Direction" type="xs:string"/>
+				<xs:attribute name="RadiusStart" type="xs:string"/>
+				<xs:attribute name="RadiusEnd" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="Spiral" use="required"/>
+				<xs:assert test="not(count(P[@N='IsGeometry']) gt 0 and @IsGeometry)" xerces:message="Parameter IsGeometry can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Length']) gt 0 and @Length)" xerces:message="Parameter Length can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Direction']) gt 0 and @Direction)" xerces:message="Parameter Direction can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='RadiusStart']) gt 0 and @RadiusStart)" xerces:message="Parameter RadiusStart can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='RadiusEnd']) gt 0 and @RadiusEnd)" xerces:message="Parameter RadiusEnd can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Straight" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='IsGeometry'" type="ParamIsGeometry"/>
+						<xs:alternative test="@N='Length'" type="ParamLength"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="IsGeometry" type="xs:string"/>
+				<xs:attribute name="Length" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="Straight" use="required"/>
+				<xs:assert test="not(count(P[@N='IsGeometry']) gt 0 and @IsGeometry)" xerces:message="Parameter IsGeometry can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Length']) gt 0 and @Length)" xerces:message="Parameter Length can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CrossSection" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="O" minOccurs="0" maxOccurs="unbounded" >
+						<xs:alternative test="@T='CrossSectionSegment'" type="CrossSectionSegment" />
+						<xs:alternative type="xs:error" />
+					</xs:element>
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='IsGeometry'" type="ParamIsGeometry"/>
+						<xs:alternative test="@N='Station'" type="ParamStation"/>
+						<xs:alternative test="@N='LeftEdgeToHCL'" type="ParamLeftEdgeToHCL"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="IsGeometry" type="xs:string"/>
+				<xs:attribute name="Station" type="xs:string"/>
+				<xs:attribute name="LeftEdgeToHCL" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="CrossSection" use="required"/>
+				<xs:assert test="not(count(P[@N='IsGeometry']) gt 0 and @IsGeometry)" xerces:message="Parameter IsGeometry can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Station']) gt 0 and @Station)" xerces:message="Parameter Station can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='LeftEdgeToHCL']) gt 0 and @LeftEdgeToHCL)" xerces:message="Parameter LeftEdgeToHCL can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CrossSectionSegment" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='IsGeometry'" type="ParamIsGeometry"/>
+						<xs:alternative test="@N='Width'" type="ParamWidth"/>
+						<xs:alternative test="@N='Slope'" type="ParamSlope"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="IsGeometry" type="xs:string"/>
+				<xs:attribute name="Width" type="xs:string"/>
+				<xs:attribute name="Slope" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="CrossSectionSegment" use="required"/>
+				<xs:assert test="not(count(P[@N='IsGeometry']) gt 0 and @IsGeometry)" xerces:message="Parameter IsGeometry can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Width']) gt 0 and @Width)" xerces:message="Parameter Width can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Slope']) gt 0 and @Slope)" xerces:message="Parameter Slope can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ElevationPoint" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='IsGeometry'" type="ParamIsGeometry"/>
+						<xs:alternative test="@N='Station'" type="ParamStation"/>
+						<xs:alternative test="@N='Grade'" type="ParamGrade"/>
+						<xs:alternative test="@N='Length'" type="ParamLength"/>
+						<xs:alternative test="@N='Elevation'" type="ParamElevation"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="IsGeometry" type="xs:string"/>
+				<xs:attribute name="Station" type="xs:string"/>
+				<xs:attribute name="Grade" type="xs:string"/>
+				<xs:attribute name="Length" type="xs:string"/>
+				<xs:attribute name="Elevation" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="ElevationPoint" use="required"/>
+				<xs:assert test="not(count(P[@N='IsGeometry']) gt 0 and @IsGeometry)" xerces:message="Parameter IsGeometry can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Station']) gt 0 and @Station)" xerces:message="Parameter Station can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Grade']) gt 0 and @Grade)" xerces:message="Parameter Grade can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Length']) gt 0 and @Length)" xerces:message="Parameter Length can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Elevation']) gt 0 and @Elevation)" xerces:message="Parameter Elevation can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Point" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='C'" type="ParamC"/>
+						<xs:alternative test="@N='R'" type="ParamR"/>
+						<xs:alternative test="@N='AlignTB'" type="ParamAlignTB"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="C" type="xs:string"/>
+				<xs:attribute name="R" type="xs:string"/>
+				<xs:attribute name="AlignTB" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="Point" use="required"/>
+				<xs:assert test="not(count(P[@N='C']) gt 0 and @C)" xerces:message="Parameter C can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='R']) gt 0 and @R)" xerces:message="Parameter R can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='AlignTB']) gt 0 and @AlignTB)" xerces:message="Parameter AlignTB can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Surface" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="O" minOccurs="0" maxOccurs="unbounded" >
+						<xs:alternative test="@T='Point'" type="Point" />
+						<xs:alternative test="@T='Surface'" type="Surface" />
+						<xs:alternative test="@T='Circle'" type="Circle" />
+						<xs:alternative type="xs:error" />
+					</xs:element>
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='IsCutout'" type="ParamIsCutout"/>
+						<xs:alternative test="@N='DrawBorder'" type="ParamDrawBorder"/>
+						<xs:alternative test="@N='Thickness'" type="ParamThickness"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="IsCutout" type="xs:string"/>
+				<xs:attribute name="DrawBorder" type="xs:string"/>
+				<xs:attribute name="Thickness" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="Surface" use="required"/>
+				<xs:assert test="count(O[@T='Point']) ge 3"  xerces:message="Surface object must contain minimum 3 Point object(s)." />
+				<xs:assert test="not(count(P[@N='IsCutout']) gt 0 and @IsCutout)" xerces:message="Parameter IsCutout can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='DrawBorder']) gt 0 and @DrawBorder)" xerces:message="Parameter DrawBorder can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Thickness']) gt 0 and @Thickness)" xerces:message="Parameter Thickness can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Volume" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="O" minOccurs="0" maxOccurs="unbounded" >
+						<xs:alternative test="@T='Surface'" type="Surface" />
+						<xs:alternative test="@T='Circle'" type="Circle" />
+						<xs:alternative type="xs:error" />
+					</xs:element>
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='DrawFaceA'" type="ParamDrawFaceA"/>
+						<xs:alternative test="@N='DrawFaceB'" type="ParamDrawFaceB"/>
+						<xs:alternative test="@N='DrawBorder'" type="ParamDrawBorder"/>
+						<xs:alternative test="@N='DrawFaceABorder'" type="ParamDrawFaceABorder"/>
+						<xs:alternative test="@N='DrawFaceBBorder'" type="ParamDrawFaceBBorder"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="DrawFaceA" type="xs:string"/>
+				<xs:attribute name="DrawFaceB" type="xs:string"/>
+				<xs:attribute name="DrawBorder" type="xs:string"/>
+				<xs:attribute name="DrawFaceABorder" type="xs:string"/>
+				<xs:attribute name="DrawFaceBBorder" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="Volume" use="required"/>
+				<xs:assert test="count(O[@T='Surface'])+count(O[@T='Circle']) ge 2"  xerces:message="Volume object must contain minimum 2 Surface or Circle object(s)." />
+				<xs:assert test="not(count(P[@N='DrawFaceA']) gt 0 and @DrawFaceA)" xerces:message="Parameter DrawFaceA can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='DrawFaceB']) gt 0 and @DrawFaceB)" xerces:message="Parameter DrawFaceB can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='DrawBorder']) gt 0 and @DrawBorder)" xerces:message="Parameter DrawBorder can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='DrawFaceABorder']) gt 0 and @DrawFaceABorder)" xerces:message="Parameter DrawFaceABorder can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='DrawFaceBBorder']) gt 0 and @DrawFaceBBorder)" xerces:message="Parameter DrawFaceBBorder can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Line" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="O" minOccurs="0" maxOccurs="unbounded" >
+						<xs:alternative test="@T='Point'" type="Point" />
+						<xs:alternative test="@T='Section'" type="Section" />
+						<xs:alternative test="@T='Shape'" type="Shape" />
+						<xs:alternative test="@T='Surface'" type="Surface" />
+						<xs:alternative test="@T='Circle'" type="Circle" />
+						<xs:alternative type="xs:error" />
+					</xs:element>
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='BetaAngle'" type="ParamBetaAngle"/>
+						<xs:alternative test="@N='Section'" type="ParamSection"/>
+						<xs:alternative test="@N='StartSkewX'" type="ParamStartSkewX"/>
+						<xs:alternative test="@N='StartSkewY'" type="ParamStartSkewY"/>
+						<xs:alternative test="@N='EndSkewX'" type="ParamEndSkewX"/>
+						<xs:alternative test="@N='EndSkewY'" type="ParamEndSkewY"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="BetaAngle" type="xs:string"/>
+				<xs:attribute name="Section" type="xs:string"/>
+				<xs:attribute name="StartSkewX" type="xs:string"/>
+				<xs:attribute name="StartSkewY" type="xs:string"/>
+				<xs:attribute name="EndSkewX" type="xs:string"/>
+				<xs:attribute name="EndSkewY" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="Line" use="required"/>
+				<xs:assert test="count(O[@T='Point']) ge 2"  xerces:message="Line object must contain minimum 2 Point object(s)." />
+				<xs:assert test="(count(O[@T='Section']) + count(O[@T='Surface']) + count(O[@T='Shape']) gt 0) or @Section"/>
+				<xs:assert test="not(count(P[@N='BetaAngle']) gt 0 and @BetaAngle)" xerces:message="Parameter BetaAngle can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Section']) gt 0 and @Section)" xerces:message="Parameter Section can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='StartSkewX']) gt 0 and @StartSkewX)" xerces:message="Parameter StartSkewX can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='StartSkewY']) gt 0 and @StartSkewY)" xerces:message="Parameter StartSkewY can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='EndSkewX']) gt 0 and @EndSkewX)" xerces:message="Parameter EndSkewX can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='EndSkewY']) gt 0 and @EndSkewY)" xerces:message="Parameter EndSkewY can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Circle" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="O" minOccurs="0" maxOccurs="unbounded" >
+						<xs:alternative test="@T='Point'" type="Point" />
+						<xs:alternative test="@T='Surface'" type="Surface" />
+						<xs:alternative test="@T='Shape'" type="Shape" />
+						<xs:alternative test="@T='Circle'" type="Circle" />
+						<xs:alternative type="xs:error" />
+					</xs:element>
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='Radius'" type="ParamRadius"/>
+						<xs:alternative test="@N='Radius2'" type="ParamRadius2"/>
+						<xs:alternative test="@N='StartAngle'" type="ParamStartAngle"/>
+						<xs:alternative test="@N='EndAngle'" type="ParamEndAngle"/>
+						<xs:alternative test="@N='Segments'" type="ParamSegments"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="Radius" type="xs:string"/>
+				<xs:attribute name="Radius2" type="xs:string"/>
+				<xs:attribute name="StartAngle" type="xs:string"/>
+				<xs:attribute name="EndAngle" type="xs:string"/>
+				<xs:attribute name="Segments" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="Circle" use="required"/>
+				<xs:assert test="count(O[@T='Point']) ge 1"  xerces:message="Circle object must contain minimum 1 Point object(s)." />
+				<xs:assert test="not(count(P[@N='Radius']) gt 0 and @Radius)" xerces:message="Parameter Radius can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Radius2']) gt 0 and @Radius2)" xerces:message="Parameter Radius2 can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='StartAngle']) gt 0 and @StartAngle)" xerces:message="Parameter StartAngle can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='EndAngle']) gt 0 and @EndAngle)" xerces:message="Parameter EndAngle can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Segments']) gt 0 and @Segments)" xerces:message="Parameter Segments can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Section" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="O" minOccurs="0" maxOccurs="unbounded" >
+						<xs:alternative test="@T='Shape'" type="Shape" />
+						<xs:alternative test="@T='Circle'" type="Circle" />
+						<xs:alternative test="@T='RebarLineLayout'" type="RebarLineLayout" />
+						<xs:alternative test="@T='RebarCircularLayout'" type="RebarCircularLayout" />
+						<xs:alternative test="@T='TendonLayout'" type="TendonLayout" />
+						<xs:alternative type="xs:error" />
+					</xs:element>
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='Material'" type="ParamMaterial"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="Material" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="Section" use="required"/>
+				<xs:assert test="count(O[@T='Shape'])+count(O[@T='Circle'])+count(O[@T='RebarLineLayout'])+count(O[@T='RebarCircularLayout'])+count(O[@T='TendonLayout']) ge 1"  xerces:message="Section object must contain minimum 1 Shape or Circle or RebarLineLayout or RebarCircularLayout or TendonLayout object(s)." />
+				<xs:assert test="not(count(P[@N='Material']) gt 0 and @Material)" xerces:message="Parameter Material can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Shape" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="O" minOccurs="0" maxOccurs="unbounded" >
+						<xs:alternative test="@T='Point'" type="Point" />
+						<xs:alternative test="@T='Shape'" type="Shape" />
+						<xs:alternative test="@T='Circle'" type="Circle" />
+						<xs:alternative type="xs:error" />
+					</xs:element>
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='Material'" type="ParamMaterial"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<!-- <xs:attribute name="Material" type="xs:string"/>  -->
+				<xs:attribute name="T" type="xs:string" fixed="Shape" use="required"/>
+				<xs:assert test="count(O[@T='Point']) ge 3"  xerces:message="Shape object must contain minimum 3 Point object(s)." />
+				<!-- <xs:assert test="not(count(P[@N='Material']) gt 0 and @Material)" xerces:message="Parameter Material can be specified either as P node or attribute on object but not both."/> -->
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Rebar" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='D'" type="ParamD"/>
+						<xs:alternative test="@N='A'" type="ParamA"/>
+						<xs:alternative test="@N='W'" type="ParamW"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="D" type="xs:string"/>
+				<xs:attribute name="A" type="xs:string"/>
+				<xs:attribute name="W" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="Rebar" use="required"/>
+				<xs:assert test="not(count(P[@N='D']) gt 0 and @D)" xerces:message="Parameter D can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='A']) gt 0 and @A)" xerces:message="Parameter A can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='W']) gt 0 and @W)" xerces:message="Parameter W can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RebarLineLayout" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="O" minOccurs="0" maxOccurs="unbounded" >
+						<xs:alternative test="@T='Point'" type="Point" />
+						<xs:alternative type="xs:error" />
+					</xs:element>
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='RebarProfile'" type="ParamRebarProfile"/>
+						<xs:alternative test="@N='NumberOfRows'" type="ParamNumberOfRows"/>
+						<xs:alternative test="@N='NumberOfRebars'" type="ParamNumberOfRebars"/>
+						<xs:alternative test="@N='RowSpacing'" type="ParamRowSpacing"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="RebarProfile" type="xs:string"/>
+				<xs:attribute name="NumberOfRows" type="xs:string"/>
+				<xs:attribute name="NumberOfRebars" type="xs:string"/>
+				<xs:attribute name="RowSpacing" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="RebarLineLayout" use="required"/>
+				<xs:assert test="count(O[@T='Point']) ge 2"  xerces:message="RebarLineLayout object must contain minimum 2 Point object(s)." />
+				<xs:assert test="not(count(P[@N='RebarProfile']) gt 0 and @RebarProfile)" xerces:message="Parameter RebarProfile can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='NumberOfRows']) gt 0 and @NumberOfRows)" xerces:message="Parameter NumberOfRows can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='NumberOfRebars']) gt 0 and @NumberOfRebars)" xerces:message="Parameter NumberOfRebars can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='RowSpacing']) gt 0 and @RowSpacing)" xerces:message="Parameter RowSpacing can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RebarCircularLayout" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="O" minOccurs="0" maxOccurs="unbounded" >
+						<xs:alternative test="@T='Point'" type="Point" />
+						<xs:alternative type="xs:error" />
+					</xs:element>
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='RebarProfile'" type="ParamRebarProfile"/>
+						<xs:alternative test="@N='NumberOfRows'" type="ParamNumberOfRows"/>
+						<xs:alternative test="@N='NumberOfRebars'" type="ParamNumberOfRebars"/>
+						<xs:alternative test="@N='RowSpacing'" type="ParamRowSpacing"/>
+						<xs:alternative test="@N='Radius1'" type="ParamRadius1"/>
+						<xs:alternative test="@N='Radius2'" type="ParamRadius2"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="RebarProfile" type="xs:string"/>
+				<xs:attribute name="NumberOfRows" type="xs:string"/>
+				<xs:attribute name="NumberOfRebars" type="xs:string"/>
+				<xs:attribute name="RowSpacing" type="xs:string"/>
+				<xs:attribute name="Radius1" type="xs:string"/>
+				<xs:attribute name="Radius2" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="RebarCircularLayout" use="required"/>
+				<xs:assert test="count(O[@T='Point']) ge 1"  xerces:message="RebarCircularLayout object must contain minimum 1 Point object(s)." />
+				<xs:assert test="not(count(P[@N='RebarProfile']) gt 0 and @RebarProfile)" xerces:message="Parameter RebarProfile can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='NumberOfRows']) gt 0 and @NumberOfRows)" xerces:message="Parameter NumberOfRows can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='NumberOfRebars']) gt 0 and @NumberOfRebars)" xerces:message="Parameter NumberOfRebars can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='RowSpacing']) gt 0 and @RowSpacing)" xerces:message="Parameter RowSpacing can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Radius1']) gt 0 and @Radius1)" xerces:message="Parameter Radius1 can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Radius2']) gt 0 and @Radius2)" xerces:message="Parameter Radius2 can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="TendonLayout" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="O" minOccurs="0" maxOccurs="unbounded" >
+						<xs:alternative test="@T='Point'" type="Point" />
+						<xs:alternative type="xs:error" />
+					</xs:element>
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='TendonDiameter'" type="ParamTendonDiameter"/>
+						<xs:alternative test="@N='Force'" type="ParamForce"/>
+						<xs:alternative test="@N='NumberOfRows'" type="ParamNumberOfRows"/>
+						<xs:alternative test="@N='NumberOfTendons'" type="ParamNumberOfTendons"/>
+						<xs:alternative test="@N='RowSpacing'" type="ParamRowSpacing"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="TendonDiameter" type="xs:string"/>
+				<xs:attribute name="Force" type="xs:string"/>
+				<xs:attribute name="NumberOfRows" type="xs:string"/>
+				<xs:attribute name="NumberOfTendons" type="xs:string"/>
+				<xs:attribute name="RowSpacing" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="TendonLayout" use="required"/>
+				<xs:assert test="count(O[@T='Point']) ge 2"  xerces:message="TendonLayout object must contain minimum 2 Point object(s)." />
+				<xs:assert test="not(count(P[@N='TendonDiameter']) gt 0 and @TendonDiameter)" xerces:message="Parameter TendonDiameter can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Force']) gt 0 and @Force)" xerces:message="Parameter Force can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='NumberOfRows']) gt 0 and @NumberOfRows)" xerces:message="Parameter NumberOfRows can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='NumberOfTendons']) gt 0 and @NumberOfTendons)" xerces:message="Parameter NumberOfTendons can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='RowSpacing']) gt 0 and @RowSpacing)" xerces:message="Parameter RowSpacing can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Node" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+                        <xs:alternative test="@N='FECoordinateSystem'" type="ParamFECoordinateSystem" />
+						<xs:alternative test="@N='X'" type="ParamX"/>
+						<xs:alternative test="@N='Y'" type="ParamY"/>
+						<xs:alternative test="@N='Z'" type="ParamZ"/>
+						<!-- <xs:alternative test="@N='Tx'" type="ParamTx"/>
+						<xs:alternative test="@N='Ty'" type="ParamTy"/>
+						<xs:alternative test="@N='Tz'" type="ParamTz"/>
+						<xs:alternative test="@N='Rx'" type="ParamRx"/>
+						<xs:alternative test="@N='Ry'" type="ParamRy"/>
+						<xs:alternative test="@N='Rz'" type="ParamRz"/> -->
+					</xs:element>
+				</xs:sequence>
+				<!-- <xs:attribute name="X" type="xs:string"/>
+				<xs:attribute name="Y" type="xs:string"/>
+				<xs:attribute name="Z" type="xs:string"/> 
+				<xs:attribute name="Tx" type="xs:string"/>
+				<xs:attribute name="Ty" type="xs:string"/>
+				<xs:attribute name="Tz" type="xs:string"/>
+				<xs:attribute name="Rx" type="xs:string"/>
+				<xs:attribute name="Ry" type="xs:string"/>
+				<xs:attribute name="Rz" type="xs:string"/>
+				<xs:attribute name="TxLink" type="xs:string"/>
+				<xs:attribute name="TyLink" type="xs:string"/>
+				<xs:attribute name="TzLink" type="xs:string"/>
+				<xs:attribute name="RxLink" type="xs:string"/>
+				<xs:attribute name="RyLink" type="xs:string"/>
+				<xs:attribute name="RzLink" type="xs:string"/> -->
+				<xs:attribute name="T" type="xs:string" fixed="Node" use="required"/>
+				<!-- <xs:assert test="not(count(P[@N='X']) gt 0 and @X)" xerces:message="Parameter X can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Y']) gt 0 and @Y)" xerces:message="Parameter Y can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Z']) gt 0 and @Z)" xerces:message="Parameter Z can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Tx']) gt 0 and @Tx)" xerces:message="Parameter Tx can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Ty']) gt 0 and @Ty)" xerces:message="Parameter Ty can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Tz']) gt 0 and @Tz)" xerces:message="Parameter Tz can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Rx']) gt 0 and @Rx)" xerces:message="Parameter Rx can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Ry']) gt 0 and @Ry)" xerces:message="Parameter Ry can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Rz']) gt 0 and @Rz)" xerces:message="Parameter Rz can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='TxLink']) gt 0 and @TxLink)" xerces:message="Parameter TxLink can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='TyLink']) gt 0 and @TyLink)" xerces:message="Parameter TyLink can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='TzLink']) gt 0 and @TzLink)" xerces:message="Parameter TzLink can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='RxLink']) gt 0 and @RxLink)" xerces:message="Parameter RxLink can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='RyLink']) gt 0 and @RyLink)" xerces:message="Parameter RyLink can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='RzLink']) gt 0 and @RzLink)" xerces:message="Parameter RzLink can be specified either as P node or attribute on object but not both."/>  -->
+                <xs:assert test="count(P[@N='FECoordinateType']) le 1" />
+            </xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="FELine" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<!-- <xs:alternative test="@N='IsGeometry'" type="ParamIsGeometry"/> -->
+                        <xs:alternative test="@N='FELineMesh'" type="ParamFELineMesh"/>
+                        <xs:alternative test="@N='FELineRelease'" type="ParamFELineRelease"/>
+                        <xs:alternative test="@N='FELineSection'" type="ParamFELineSection"/>
+						<xs:alternative test="@N='Node1'" type="ParamNode1"/>
+						<xs:alternative test="@N='Node2'" type="ParamNode2"/>
+                        <xs:alternative test="@N='Section'" type="ParamSection"/>
+						<!--  <xs:alternative test="@N='BetaAngle'" type="ParamBetaAngle"/>
+						
+						<xs:alternative test="@N='Node1OffX'" type="ParamNode1OffX"/>
+						<xs:alternative test="@N='Node1OffY'" type="ParamNode1OffY"/>
+						<xs:alternative test="@N='Node1OffZ'" type="ParamNode1OffZ"/>
+						<xs:alternative test="@N='Node2OffX'" type="ParamNode2OffX"/>
+						<xs:alternative test="@N='Node2OffY'" type="ParamNode2OffY"/>
+						<xs:alternative test="@N='Node2OffZ'" type="ParamNode2OffZ"/> -->
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<!-- <xs:attribute name="IsGeometry" type="xs:string"/>
+				<xs:attribute name="Node1" type="xs:string"/>
+				<xs:attribute name="Node2" type="xs:string"/>
+				<xs:attribute name="BetaAngle" type="xs:string"/>
+				<xs:attribute name="Section" type="xs:string"/>
+				<xs:attribute name="Node1OffX" type="xs:string"/>
+				<xs:attribute name="Node1OffY" type="xs:string"/>
+				<xs:attribute name="Node1OffZ" type="xs:string"/>
+				<xs:attribute name="Node2OffX" type="xs:string"/>
+				<xs:attribute name="Node2OffY" type="xs:string"/>
+				<xs:attribute name="Node2OffZ" type="xs:string"/> -->
+				<xs:attribute name="T" type="xs:string" fixed="FELine" use="required"/>
+				<!-- <xs:assert test="not(count(P[@N='IsGeometry']) gt 0 and @IsGeometry)" xerces:message="Parameter IsGeometry can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Node1']) gt 0 and @Node1)" xerces:message="Parameter Node1 can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Node2']) gt 0 and @Node2)" xerces:message="Parameter Node2 can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='BetaAngle']) gt 0 and @BetaAngle)" xerces:message="Parameter BetaAngle can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Section']) gt 0 and @Section)" xerces:message="Parameter Section can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Node1OffX']) gt 0 and @Node1OffX)" xerces:message="Parameter Node1OffX can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Node1OffY']) gt 0 and @Node1OffY)" xerces:message="Parameter Node1OffY can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Node1OffZ']) gt 0 and @Node1OffZ)" xerces:message="Parameter Node1OffZ can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Node2OffX']) gt 0 and @Node2OffX)" xerces:message="Parameter Node2OffX can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Node2OffY']) gt 0 and @Node2OffY)" xerces:message="Parameter Node2OffY can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Node2OffZ']) gt 0 and @Node2OffZ)" xerces:message="Parameter Node2OffZ can be specified either as P node or attribute on object but not both."/>  -->
+                <!--  <xs:assert test="count(P[@N='FELineMesh']) le 1" />
+                <xs:assert test="count(P[@N='FELineRelease']) le 1" />
+                <xs:assert test="count(P[@N='FELineSection']) le 1" />  -->
+            </xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="FESurface" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<!-- <xs:alternative test="@N='IsGeometry'" type="ParamIsGeometry"/> -->
+                        <xs:alternative test="@N='FESurfaceMesh'" type="ParamFESurfaceMesh"/>
+                        <xs:alternative test="@N='FESurfaceSection'" type="ParamFESurfaceSection"/>
+                        <xs:alternative test="@N='FESurfaceConstraint'" type="ParamFESurfaceConstraint"/>
+						<xs:alternative test="@N='Node1'" type="ParamNode1"/>
+						<xs:alternative test="@N='Node2'" type="ParamNode2"/>
+						<xs:alternative test="@N='Node3'" type="ParamNode3"/>
+						<xs:alternative test="@N='Node4'" type="ParamNode4"/>
+                        <xs:alternative test="@N='Node5'" type="ParamNode5"/>
+                        <xs:alternative test="@N='Node30'" type="ParamNode30"/>
+						<xs:alternative test="@N='Thickness'" type="ParamThickness"/>
+						<xs:alternative test="@N='Material'" type="ParamMaterial"/>
+						<!--  <xs:alternative test="@N='Node1OffX'" type="ParamNode1OffX"/>
+						<xs:alternative test="@N='Node1OffY'" type="ParamNode1OffY"/>
+						<xs:alternative test="@N='Node1OffZ'" type="ParamNode1OffZ"/>
+						<xs:alternative test="@N='Node2OffX'" type="ParamNode2OffX"/>
+						<xs:alternative test="@N='Node2OffY'" type="ParamNode2OffY"/>
+						<xs:alternative test="@N='Node2OffZ'" type="ParamNode2OffZ"/>
+						<xs:alternative test="@N='Node3OffX'" type="ParamNode3OffX"/>
+						<xs:alternative test="@N='Node3OffY'" type="ParamNode3OffY"/>
+						<xs:alternative test="@N='Node3OffZ'" type="ParamNode3OffZ"/>
+						<xs:alternative test="@N='Node4OffX'" type="ParamNode4OffX"/>
+						<xs:alternative test="@N='Node4OffY'" type="ParamNode4OffY"/>
+						<xs:alternative test="@N='Node4OffZ'" type="ParamNode4OffZ"/>  -->
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<!-- <xs:attribute name="IsGeometry" type="xs:string"/>
+				<xs:attribute name="Node1" type="xs:string"/>
+				<xs:attribute name="Node2" type="xs:string"/>
+				<xs:attribute name="Node3" type="xs:string"/>
+				<xs:attribute name="Node4" type="xs:string"/>
+				<xs:attribute name="Thickness" type="xs:string"/>
+				<xs:attribute name="Material" type="xs:string"/>
+				<xs:attribute name="Node1OffX" type="xs:string"/>
+				<xs:attribute name="Node1OffY" type="xs:string"/>
+				<xs:attribute name="Node1OffZ" type="xs:string"/>
+				<xs:attribute name="Node2OffX" type="xs:string"/>
+				<xs:attribute name="Node2OffY" type="xs:string"/>
+				<xs:attribute name="Node2OffZ" type="xs:string"/>
+				<xs:attribute name="Node3OffX" type="xs:string"/>
+				<xs:attribute name="Node3OffY" type="xs:string"/>
+				<xs:attribute name="Node3OffZ" type="xs:string"/>
+				<xs:attribute name="Node4OffX" type="xs:string"/>
+				<xs:attribute name="Node4OffY" type="xs:string"/>
+				<xs:attribute name="Node4OffZ" type="xs:string"/> -->
+				<xs:attribute name="T" type="xs:string" fixed="FESurface" use="required"/>
+				<!-- <xs:assert test="not(count(P[@N='IsGeometry']) gt 0 and @IsGeometry)" xerces:message="Parameter IsGeometry can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Node1']) gt 0 and @Node1)" xerces:message="Parameter Node1 can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Node2']) gt 0 and @Node2)" xerces:message="Parameter Node2 can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Node3']) gt 0 and @Node3)" xerces:message="Parameter Node3 can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Node4']) gt 0 and @Node4)" xerces:message="Parameter Node4 can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Thickness']) gt 0 and @Thickness)" xerces:message="Parameter Thickness can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Material']) gt 0 and @Material)" xerces:message="Parameter Material can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Node1OffX']) gt 0 and @Node1OffX)" xerces:message="Parameter Node1OffX can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Node1OffY']) gt 0 and @Node1OffY)" xerces:message="Parameter Node1OffY can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Node1OffZ']) gt 0 and @Node1OffZ)" xerces:message="Parameter Node1OffZ can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Node2OffX']) gt 0 and @Node2OffX)" xerces:message="Parameter Node2OffX can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Node2OffY']) gt 0 and @Node2OffY)" xerces:message="Parameter Node2OffY can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Node2OffZ']) gt 0 and @Node2OffZ)" xerces:message="Parameter Node2OffZ can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Node3OffX']) gt 0 and @Node3OffX)" xerces:message="Parameter Node3OffX can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Node3OffY']) gt 0 and @Node3OffY)" xerces:message="Parameter Node3OffY can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Node3OffZ']) gt 0 and @Node3OffZ)" xerces:message="Parameter Node3OffZ can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Node4OffX']) gt 0 and @Node4OffX)" xerces:message="Parameter Node4OffX can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Node4OffY']) gt 0 and @Node4OffY)" xerces:message="Parameter Node4OffY can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Node4OffZ']) gt 0 and @Node4OffZ)" xerces:message="Parameter Node4OffZ can be specified either as P node or attribute on object but not both."/> -->
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="AnalysisCase" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<!-- <xs:alternative test="@N='IsGeometry'" type="ParamIsGeometry"/> -->
+						<xs:alternative test="@N='WeightFactor'" type="ParamWeightFactor"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<!--  <xs:attribute name="IsGeometry" type="xs:string"/>
+				<xs:attribute name="WeightFactor" type="xs:string"/>  -->
+				<xs:attribute name="T" type="xs:string" fixed="AnalysisCase" use="required"/>
+				<!--  <xs:assert test="not(count(P[@N='IsGeometry']) gt 0 and @IsGeometry)" xerces:message="Parameter IsGeometry can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='WeightFactor']) gt 0 and @WeightFactor)" xerces:message="Parameter WeightFactor can be specified either as P node or attribute on object but not both."/>  -->
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="NodeLoad" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<!-- <xs:alternative test="@N='IsGeometry'" type="ParamIsGeometry"/> -->
+						<xs:alternative test="@N='Node'" type="ParamNode"/>
+						<xs:alternative test="@N='LC'" type="ParamLC"/>
+						<xs:alternative test="@N='Fx'" type="ParamFx"/>
+						<xs:alternative test="@N='Fy'" type="ParamFy"/>
+						<xs:alternative test="@N='Fz'" type="ParamFz"/>
+						<xs:alternative test="@N='Mx'" type="ParamMx"/>
+						<xs:alternative test="@N='My'" type="ParamMy"/>
+						<xs:alternative test="@N='Mz'" type="ParamMz"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<!--  <xs:attribute name="IsGeometry" type="xs:string"/>
+				<xs:attribute name="Node" type="xs:string"/>
+				<xs:attribute name="LC" type="xs:string"/>
+				<xs:attribute name="Fx" type="xs:string"/>
+				<xs:attribute name="Fy" type="xs:string"/>
+				<xs:attribute name="Fz" type="xs:string"/>
+				<xs:attribute name="Mx" type="xs:string"/>
+				<xs:attribute name="My" type="xs:string"/>
+				<xs:attribute name="Mz" type="xs:string"/>  -->
+				<xs:attribute name="T" type="xs:string" fixed="NodeLoad" use="required"/>
+				<!--  <xs:assert test="not(count(P[@N='IsGeometry']) gt 0 and @IsGeometry)" xerces:message="Parameter IsGeometry can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Node']) gt 0 and @Node)" xerces:message="Parameter Node can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='LC']) gt 0 and @LC)" xerces:message="Parameter LC can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Fx']) gt 0 and @Fx)" xerces:message="Parameter Fx can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Fy']) gt 0 and @Fy)" xerces:message="Parameter Fy can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Fz']) gt 0 and @Fz)" xerces:message="Parameter Fz can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Mx']) gt 0 and @Mx)" xerces:message="Parameter Mx can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='My']) gt 0 and @My)" xerces:message="Parameter My can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Mz']) gt 0 and @Mz)" xerces:message="Parameter Mz can be specified either as P node or attribute on object but not both."/>  -->
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Combination" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<!-- <xs:alternative test="@N='IsGeometry'" type="ParamIsGeometry"/>  -->
+						<xs:alternative test="@N='Case1'" type="ParamCase1"/>
+						<xs:alternative test="@N='Factor1'" type="ParamFactor1"/>
+						<xs:alternative test="@N='Case2'" type="ParamCase2"/>
+						<xs:alternative test="@N='Factor2'" type="ParamFactor2"/>
+						<xs:alternative test="@N='Case3'" type="ParamCase3"/>
+						<xs:alternative test="@N='Factor3'" type="ParamFactor3"/>
+						<xs:alternative test="@N='Case4'" type="ParamCase4"/>
+						<xs:alternative test="@N='Factor4'" type="ParamFactor4"/>
+						<xs:alternative test="@N='Case5'" type="ParamCase5"/>
+						<xs:alternative test="@N='Factor5'" type="ParamFactor5"/>
+						<xs:alternative test="@N='Case6'" type="ParamCase6"/>
+						<xs:alternative test="@N='Factor6'" type="ParamFactor6"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<!--  <xs:attribute name="IsGeometry" type="xs:string"/>
+				<xs:attribute name="Case1" type="xs:string"/>
+				<xs:attribute name="Factor1" type="xs:string"/>
+				<xs:attribute name="Case2" type="xs:string"/>
+				<xs:attribute name="Factor2" type="xs:string"/>
+				<xs:attribute name="Case3" type="xs:string"/>
+				<xs:attribute name="Factor3" type="xs:string"/>
+				<xs:attribute name="Case4" type="xs:string"/>
+				<xs:attribute name="Factor4" type="xs:string"/>
+				<xs:attribute name="Case5" type="xs:string"/>
+				<xs:attribute name="Factor5" type="xs:string"/>
+				<xs:attribute name="Case6" type="xs:string"/>
+				<xs:attribute name="Factor6" type="xs:string"/> -->
+				<xs:attribute name="T" type="xs:string" fixed="Combination" use="required"/>
+				<!--  <xs:assert test="not(count(P[@N='IsGeometry']) gt 0 and @IsGeometry)" xerces:message="Parameter IsGeometry can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Case1']) gt 0 and @Case1)" xerces:message="Parameter Case1 can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Factor1']) gt 0 and @Factor1)" xerces:message="Parameter Factor1 can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Case2']) gt 0 and @Case2)" xerces:message="Parameter Case2 can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Factor2']) gt 0 and @Factor2)" xerces:message="Parameter Factor2 can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Case3']) gt 0 and @Case3)" xerces:message="Parameter Case3 can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Factor3']) gt 0 and @Factor3)" xerces:message="Parameter Factor3 can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Case4']) gt 0 and @Case4)" xerces:message="Parameter Case4 can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Factor4']) gt 0 and @Factor4)" xerces:message="Parameter Factor4 can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Case5']) gt 0 and @Case5)" xerces:message="Parameter Case5 can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Factor5']) gt 0 and @Factor5)" xerces:message="Parameter Factor5 can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Case6']) gt 0 and @Case6)" xerces:message="Parameter Case6 can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Factor6']) gt 0 and @Factor6)" xerces:message="Parameter Factor6 can be specified either as P node or attribute on object but not both."/>  -->
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DesignCode" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="O" minOccurs="0" maxOccurs="unbounded" >
+						<xs:alternative test="@T='Check'" type="Check" />
+						<xs:alternative type="xs:error" />
+					</xs:element>
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='IsGeometry'" type="ParamIsGeometry"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="IsGeometry" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="DesignCode" use="required"/>
+				<xs:assert test="not(count(P[@N='IsGeometry']) gt 0 and @IsGeometry)" xerces:message="Parameter IsGeometry can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Check" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='IsGeometry'" type="ParamIsGeometry"/>
+						<xs:alternative test="@N='Code'" type="ParamCode"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="IsGeometry" type="xs:string"/>
+				<xs:attribute name="Code" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="Check" use="required"/>
+				<xs:assert test="not(count(P[@N='IsGeometry']) gt 0 and @IsGeometry)" xerces:message="Parameter IsGeometry can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Code']) gt 0 and @Code)" xerces:message="Parameter Code can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DesignRun" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='IsGeometry'" type="ParamIsGeometry"/>
+						<xs:alternative test="@N='Code'" type="ParamCode"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="IsGeometry" type="xs:string"/>
+				<xs:attribute name="Code" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="DesignRun" use="required"/>
+				<xs:assert test="not(count(P[@N='IsGeometry']) gt 0 and @IsGeometry)" xerces:message="Parameter IsGeometry can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Code']) gt 0 and @Code)" xerces:message="Parameter Code can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CADD" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="T" type="xs:string" fixed="CADD" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CADDLine" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="O" minOccurs="0" maxOccurs="unbounded" >
+						<xs:alternative test="@T='Point'" type="Point" />
+						<xs:alternative type="xs:error" />
+					</xs:element>
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='Thickness'" type="ParamThickness"/>
+						<xs:alternative test="@N='Color'" type="ParamColor"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="Thickness" type="xs:string"/>
+				<xs:attribute name="Color" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="CADDLine" use="required"/>
+				<xs:assert test="count(O[@T='Point']) ge 2"  xerces:message="CADDLine object must contain minimum 2 Point object(s)." />
+				<xs:assert test="not(count(P[@N='Thickness']) gt 0 and @Thickness)" xerces:message="Parameter Thickness can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Color']) gt 0 and @Color)" xerces:message="Parameter Color can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CADDShape" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="O" minOccurs="0" maxOccurs="unbounded" >
+						<xs:alternative test="@T='Point'" type="Point" />
+						<xs:alternative type="xs:error" />
+					</xs:element>
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='Thickness'" type="ParamThickness"/>
+						<xs:alternative test="@N='Color'" type="ParamColor"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="Thickness" type="xs:string"/>
+				<xs:attribute name="Color" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="CADDShape" use="required"/>
+				<xs:assert test="count(O[@T='Point']) ge 3"  xerces:message="CADDShape object must contain minimum 3 Point object(s)." />
+				<xs:assert test="not(count(P[@N='Thickness']) gt 0 and @Thickness)" xerces:message="Parameter Thickness can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Color']) gt 0 and @Color)" xerces:message="Parameter Color can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="File" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='IsGeometry'" type="ParamIsGeometry"/>
+						<xs:alternative test="@N='Folder'" type="ParamFolder"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="IsGeometry" type="xs:string"/>
+				<xs:attribute name="Folder" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="File" use="required"/>
+				<xs:assert test="not(count(P[@N='IsGeometry']) gt 0 and @IsGeometry)" xerces:message="Parameter IsGeometry can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Folder']) gt 0 and @Folder)" xerces:message="Parameter Folder can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Folder" mixed="false" >
+		<xs:complexContent>
+			<xs:extension base="Object">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded" >
+					<xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+						<xs:alternative test="@N='IsGeometry'" type="ParamIsGeometry"/>
+						<xs:alternative test="@N='Folder'" type="ParamFolder"/>
+						<xs:alternative type="xs:error" />
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="IsGeometry" type="xs:string"/>
+				<xs:attribute name="Folder" type="xs:string"/>
+				<xs:attribute name="T" type="xs:string" fixed="Folder" use="required"/>
+				<xs:assert test="not(count(P[@N='IsGeometry']) gt 0 and @IsGeometry)" xerces:message="Parameter IsGeometry can be specified either as P node or attribute on object but not both."/>
+				<xs:assert test="not(count(P[@N='Folder']) gt 0 and @Folder)" xerces:message="Parameter Folder can be specified either as P node or attribute on object but not both."/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Parameter" abstract="true">
+		<xs:attribute name="V" type="xs:string" use="required"/>
+		<xs:attribute name="T" type="xs:string" default="Expr"/>
+		<xs:attribute name="D" type="xs:string"/>
+		<xs:attribute name="UC" type="xs:string"/>
+		<xs:attribute name="UT" type="xs:string"/>
+		<xs:attribute name="Category" type="xs:string"/>
+		<xs:attribute name="Role" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="ParamN">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="N" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamX">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="X" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamY">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Y" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamZ">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Z" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamRX">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="RX" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamRY">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="RY" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamRZ">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="RZ" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamAX">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="AX" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamAY">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="AY" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamAZ">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="AZ" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamAlignment">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Alignment" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamAlignH">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="AlignH" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamAlignV">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="AlignV" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamAlignT">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="AlignT" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamIsGeometry">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="IsGeometry" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamLength">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Length" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamForce">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Force" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamAngle">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Angle" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamTemperature">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Temperature" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamE">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="E" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamNu">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Nu" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Paramd">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="d" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Parama">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="a" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamFy">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Fy" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamFu">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Fu" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamFc28">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Fc28" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamType">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Type" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamS">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="S" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamI">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="I" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamCTRL">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="CTRL" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Paramindex">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="index" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamLat">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Lat" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamLng">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Lng" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamElev">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Elev" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamP1">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="P1" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamP2">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="P2" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamP3">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="P3" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamStation">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Station" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamAzimuth">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Azimuth" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamRadius">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Radius" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamDirection">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Direction" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamRadiusStart">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="RadiusStart" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamRadiusEnd">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="RadiusEnd" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamLeftEdgeToHCL">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="LeftEdgeToHCL" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamWidth">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Width" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamSlope">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Slope" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamGrade">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Grade" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamElevation">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Elevation" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamC">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="C" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamR">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="R" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamAlignTB">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="AlignTB" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamIsCutout">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="IsCutout" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamDrawBorder">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="DrawBorder" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamThickness">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Thickness" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamDrawFaceA">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="DrawFaceA" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamDrawFaceB">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="DrawFaceB" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamDrawFaceABorder">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="DrawFaceABorder" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamDrawFaceBBorder">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="DrawFaceBBorder" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamBetaAngle">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="BetaAngle" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamSection">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Section" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamStartSkewX">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="StartSkewX" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamStartSkewY">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="StartSkewY" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamEndSkewX">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="EndSkewX" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamEndSkewY">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="EndSkewY" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamRadius2">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Radius2" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamStartAngle">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="StartAngle" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamEndAngle">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="EndAngle" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamSegments">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Segments" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamMaterial">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Material" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamD">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="D" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamA">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="A" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamW">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="W" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamRebarProfile">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="RebarProfile" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamNumberOfRows">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="NumberOfRows" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamNumberOfRebars">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="NumberOfRebars" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamRowSpacing">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="RowSpacing" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamRadius1">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Radius1" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamTendonDiameter">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="TendonDiameter" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamNumberOfTendons">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="NumberOfTendons" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamTx">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Tx" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamTy">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Ty" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamTz">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Tz" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamRx">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Rx" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamRy">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Ry" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamRz">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Rz" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamTxLink">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="TxLink" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamTyLink">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="TyLink" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamTzLink">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="TzLink" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamRxLink">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="RxLink" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamRyLink">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="RyLink" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamRzLink">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="RzLink" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamNode1">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Node1" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamNode2">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Node2" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamNode1OffX">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Node1OffX" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamNode1OffY">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Node1OffY" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamNode1OffZ">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Node1OffZ" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamNode2OffX">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Node2OffX" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamNode2OffY">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Node2OffY" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamNode2OffZ">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Node2OffZ" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamNode3">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Node3" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamNode4">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Node4" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamNode3OffX">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Node3OffX" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamNode3OffY">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Node3OffY" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamNode3OffZ">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Node3OffZ" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamNode4OffX">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Node4OffX" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamNode4OffY">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Node4OffY" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamNode4OffZ">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Node4OffZ" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamWeightFactor">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="WeightFactor" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamNode">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Node" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamLC">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="LC" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamFx">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Fx" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamFz">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Fz" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamMx">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Mx" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamMy">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="My" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamMz">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Mz" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamCase1">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Case1" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamFactor1">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Factor1" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamCase2">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Case2" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamFactor2">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Factor2" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamCase3">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Case3" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamFactor3">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Factor3" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamCase4">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Case4" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamFactor4">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Factor4" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamCase5">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Case5" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamFactor5">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Factor5" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamCase6">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Case6" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamFactor6">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Factor6" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamCode">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Code" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamColor">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Color" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ParamFolder">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Folder" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+    
+    
+    
+    
+    
+    <!-- ADDED ENITITIES -->
+    
+	<xs:complexType name="ParamFELineMesh">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="FELineMesh" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+    
+ 	<xs:complexType name="ParamFELineRelease">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="FELineRelease" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+ 	<xs:complexType name="ParamFELineSection">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="FELineSection" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="ParamFESurfaceMesh">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="FESurfaceMesh" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+    
+ 	<xs:complexType name="ParamFESurfaceConstraint">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="FESurfaceConstraint" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+    <xs:complexType name="ParamNode5">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="FESurfaceNode5" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamNode6">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="FESurfaceNode6" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamNode30">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="FESurfaceNode30" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+ 	<xs:complexType name="ParamFESurfaceSection">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="FESurfaceSection" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+ 	<xs:complexType name="ParamSymmetricity">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="Symmetricity" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+ 	<xs:complexType name="ParamTemperatureDependency">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="TemperatureDependency" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+ 	<xs:complexType name="ParamShearModulus">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="ShearModulus" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+ 	<xs:complexType name="ParamEffectiveYieldStress">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="EffectiveYieldStress" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+ 	<xs:complexType name="ParamEffectiveUltimateStress">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="EffectiveUltimateStress" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+ 	<xs:complexType name="ParamModalDampingRatio">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="ModalDampingRatio" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+ 	<xs:complexType name="ParamViscousDampingMass">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="ViscousDampingMass" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+ 	<xs:complexType name="ParamViscousDampingStiffness">
+		<xs:complexContent>
+			<xs:extension base="Parameter">
+				<xs:attribute name="N" type="xs:string" fixed="ViscousDampingStiffness" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+
+
+    <xs:complexType name="ParamFECoordinateSystem">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="FECoordinateSystem" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamCoordinateType">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="CoordinateType" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamOriginX">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="OriginX" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamOriginY">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="OriginY" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamOriginZ">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="OriginZ" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamOriginRX">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="OriginRX" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamOriginRY">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="OriginRY" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamOriginRZ">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="OriginRZ" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+
+    <xs:complexType name="ParamLaneFrom">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="LaneFrom" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamReferenceLayout">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="ReferenceLayout" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamReferenceFrame">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="ReferenceFrame" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamOffset">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="Offset" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamDiscretizationAlongLane">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="DiscretizationAlongLane" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamDiscretizationAcrossLane">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="DiscretizationAcrossLane" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamLeftEdgeType">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="LeftEdgeType" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamRightEdgeType">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="RightEdgeType" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="ParamVehicleName">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="VehicleName" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamLoadType">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="LoadType" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamNumLoad">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="NumLoad" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamUniformLoad">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="UniformLoad" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamUniformType">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="UniformType" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamAxleLoad">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="AxleLoad" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamAxleType">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="AxleType" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="ParamAxleWidth">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="AxleWidth" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamMinDistance">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="MinDistance" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamMaxDistance">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="MaxDistance" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamVehicleClass">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="VehicleClass" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamScaleFactor">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="ScaleFactor" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamLoadPattern">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="LoadPattern" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamDesignType">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="DesignType" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamSelfWeightFactor">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="SelfWeightFactor" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamLoadDuration">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="LoadDuration" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamLoadDiscretization">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="LoadDiscretization" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamVehicle">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="Vehicle" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamLane">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="Lane" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamStartTime">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="StartTime" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamSpeed">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="Speed" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamAnalysisCase">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="AnalysisCase" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamAnalysisCaseType">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="AnalysisCaseType" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamInitialCondition">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="InitialCondition" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamLoadName">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="LoadName" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamModeType">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="ModeType" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamMaxNumModes">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="MaxNumModes" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamMinNumModes">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="MinNumModes" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamFrequencyShift">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="FrequencyShift" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamCutoffFrequency">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="CutoffFrequency" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamConvergenceTolerance">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="ConvergenceTolerance" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamNumStep">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="NumStep" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamStepSize">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="StepSize" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamFunction">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="Function" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamArrivalTime">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="ArrivalTime" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamTimeFactor">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="TimeFactor" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamIntegrationMethod">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="IntegrationMethod" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamGamma">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="Gamma" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamBeta">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="Beta" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamAlpha">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="Alpha" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="FECoordinateSystem" mixed="false" >
+        <xs:complexContent>
+            <xs:extension base="Object">
+                <xs:sequence minOccurs="0" maxOccurs="unbounded" >
+                    <xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+                        <xs:alternative test="@N='CoordinateType'" type="ParamCoordinateType" />
+                        <xs:alternative test="@N='OriginX'" type="ParamOriginX" />
+                        <xs:alternative test="@N='OriginY'" type="ParamOriginY" />
+                        <xs:alternative test="@N='OriginZ'" type="ParamOriginZ" />
+                        <xs:alternative test="@N='OriginRX'" type="ParamOriginRX" />
+                        <xs:alternative test="@N='OriginRY'" type="ParamOriginRY" />
+                        <xs:alternative test="@N='OriginRZ'" type="ParamOriginRZ" />
+                        <xs:alternative type="xs:error" />
+                    </xs:element>
+                </xs:sequence>
+                <xs:attribute name="T" type="xs:string" fixed="FECoordinateSystem" use="required"/>
+                <xs:assert test="count(P[@N='FECoordinateType']) eq 1" />
+                <xs:assert test="count(P[@N='OriginX']) eq 1" />
+                <xs:assert test="count(P[@N='OriginY']) eq 1" />
+                <xs:assert test="count(P[@N='OriginZ']) eq 1" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="FELane" mixed="false" >
+        <xs:complexContent>
+            <xs:extension base="Object">
+                <xs:sequence minOccurs="0" maxOccurs="unbounded" >
+                    <xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+                        <xs:alternative test="@N='LaneFrom'" type="ParamLaneFrom" />
+                        <xs:alternative test="@N='ReferenceLayout'" type="ParamReferenceLayout" />
+                        <xs:alternative test="@N='ReferenceFrame'" type="ParamReferenceFrame" />
+                        <xs:alternative test="@N='Station'" type="ParamStation" />
+                        <xs:alternative test="@N='Width'" type="ParamWidth" />
+                        <xs:alternative test="@N='Offset'" type="ParamOffset" />
+                        <xs:alternative test="@N='Radius'" type="ParamRadius" />
+                        <xs:alternative test="@N='DiscretizationAlongLane'" type="ParamDiscretizationAlongLane" />
+                        <xs:alternative test="@N='DiscretizationAcrossLane'" type="ParamDiscretizationAcrossLane" />
+                        <xs:alternative test="@N='LeftEdgeType'" type="ParamLeftEdgeType" />
+                        <xs:alternative test="@N='RightEdgeType'" type="ParamRightEdgeType" />
+                        <xs:alternative type="xs:error" />
+                    </xs:element>
+                </xs:sequence>
+                <xs:attribute name="T" type="xs:string" fixed="FELane" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="FEVehicle" mixed="false" >
+        <xs:complexContent>
+            <xs:extension base="Object">
+                <xs:sequence minOccurs="0" maxOccurs="unbounded" >
+                    <xs:element name="O" minOccurs="0" maxOccurs="unbounded">
+                        <xs:alternative test="@T='FEVehicleLoad'" type="FEVehicleLoad" />
+                    </xs:element>
+                    <xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+                        <xs:alternative test="@N='VehicleName'" type="ParamVehicleName" />
+                        <xs:alternative test="@N='NumLoad'" type="ParamNumLoad" />
+                        <xs:alternative type="xs:error" />
+                    </xs:element>
+                </xs:sequence>
+                <xs:attribute name="T" type="xs:string" fixed="FEVehicle" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="FEVehicleLoad" mixed="false" >
+        <xs:complexContent>
+            <xs:extension base="Object">
+                <xs:sequence minOccurs="0" maxOccurs="unbounded" >
+                    <xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+                        <xs:alternative test="@N='LoadType'" type="ParamLoadType" />
+                        <xs:alternative test="@N='UniformLoad'" type="ParamUniformLoad" />
+                        <xs:alternative test="@N='UniformType'" type="ParamUniformType" />
+                        <xs:alternative test="@N='AxleLoad'" type="ParamAxleLoad" />
+                        <xs:alternative test="@N='AxleType'" type="ParamAxleType" />
+                        <xs:alternative test="@N='AxleWidth'" type="ParamAxleWidth" />
+                        <xs:alternative test="@N='MinDistance'" type="ParamMinDistance" />
+                        <xs:alternative test="@N='MaxDistance'" type="ParamMaxDistance" />
+                        <xs:alternative type="xs:error" />
+                    </xs:element>
+                </xs:sequence>
+                <xs:attribute name="T" type="xs:string" fixed="FEVehicleLoad" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="FEVehicleClass" mixed="false" >
+        <xs:complexContent>
+            <xs:extension base="Object">
+                <xs:sequence minOccurs="0" maxOccurs="unbounded" >
+                    <xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+                        <xs:alternative test="@N='VehicleName'" type="ParamVehicleName" />
+                        <xs:alternative test="@N='ScaleFactor'" type="ParamScaleFactor" />
+                        <xs:alternative type="xs:error" />
+                    </xs:element>
+                </xs:sequence>
+                <xs:attribute name="T" type="xs:string" fixed="FEVehicleClass" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="FELoadPattern" mixed="false" >
+        <xs:complexContent>
+            <xs:extension base="Object">
+                <xs:sequence minOccurs="0" maxOccurs="unbounded" >
+                    <xs:element name="O" minOccurs="0" maxOccurs="unbounded">
+                        <xs:alternative test="@T='FEMultiStep'" type="FEMultiStep" />
+                    </xs:element>
+                    <xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+                        <xs:alternative test="@N='DesignType'" type="ParamDesignType" />
+                        <xs:alternative test="@N='SelfWeightFactor'" type="ParamSelfWeightFactor" />
+                        <xs:alternative type="xs:error" />
+                    </xs:element>
+                </xs:sequence>
+                <xs:attribute name="T" type="xs:string" fixed="FELoadPattern" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="FEMultiStep" mixed="false" >
+        <xs:complexContent>
+            <xs:extension base="Object">
+                <xs:sequence minOccurs="0" maxOccurs="unbounded" >
+                    <xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+                        <xs:alternative test="@N='LoadDuration'" type="ParamLoadDuration" />
+                        <xs:alternative test="@N='LoadDiscretization'" type="ParamLoadDiscretization" />
+                        <xs:alternative test="@N='Vehicle'" type="ParamVehicle" />
+                        <xs:alternative test="@N='Lane'" type="ParamLane" />
+                        <xs:alternative test="@N='Station'" type="ParamStation" />
+                        <xs:alternative test="@N='StartTime'" type="ParamStartTime" />
+                        <xs:alternative test="@N='Direction'" type="ParamDirection" />
+                        <xs:alternative test="@N='Speed'" type="ParamSpeed" />
+                        <xs:alternative type="xs:error" />
+                    </xs:element>
+                </xs:sequence>
+                <xs:attribute name="T" type="xs:string" fixed="FEMultiStep" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="FEAnalysisCase" mixed="false" >
+        <xs:complexContent>
+            <xs:extension base="Object">
+                <xs:sequence minOccurs="0" maxOccurs="unbounded" >
+                    <xs:element name="O" minOccurs="0" maxOccurs="unbounded">
+                        <xs:alternative test="@N='FEStatic'" type="FEStatic" />
+                        <xs:alternative test="@N='FEModal'" type="FEModal" />
+                        <xs:alternative test="@N='FEMultiStepStatic'" type="FEMultiStepStatic" />
+                        <xs:alternative test="@N='FEDirectIntegrationHistory'" type="FEDirectIntegrationHistory" />
+                    </xs:element>
+                    <xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+                        <xs:alternative test="@N='AnalysisCaseType'" type="ParamAnalysisCaseType" />
+                        <xs:alternative test="@N='InitialCondition'" type="ParamInitialCondition" />
+                        <xs:alternative test="@N='DesignType'" type="ParamDesignType" />
+                        <xs:alternative type="xs:error" />
+                    </xs:element>
+                </xs:sequence>
+                <xs:attribute name="T" type="xs:string" fixed="FEAnalysisCase" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="FEStatic" mixed="false" >
+        <xs:complexContent>
+            <xs:extension base="Object">
+                <xs:sequence minOccurs="0" maxOccurs="unbounded" >
+                    <xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+                        <xs:alternative test="@N='LoadType'" type="ParamLoadType" />
+                        <xs:alternative test="@N='LoadName'" type="ParamLoadName" />
+                        <xs:alternative test="@N='ScaleFactor'" type="ParamScaleFactor" />
+                        <xs:alternative type="xs:error" />
+                    </xs:element>
+                </xs:sequence>
+                <xs:attribute name="T" type="xs:string" fixed="FEStatic" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="FEModal" mixed="false" >
+        <xs:complexContent>
+            <xs:extension base="Object">
+                <xs:sequence minOccurs="0" maxOccurs="unbounded" >
+                    <xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+                        <xs:alternative test="@N='ModeType'" type="ParamModeType" />
+                        <xs:alternative test="@N='MaxNumModes'" type="ParamMaxNumModes" />
+                        <xs:alternative test="@N='MinNumModes'" type="ParamMinNumModes" />
+                        <xs:alternative test="@N='FrequencyShift'" type="ParamFrequencyShift" />
+                        <xs:alternative test="@N='CutoffFrequency'" type="ParamCutoffFrequency" />
+                        <xs:alternative test="@N='ConvergenceTolerance'" type="ParamConvergenceTolerance" />
+                        <xs:alternative type="xs:error" />
+                    </xs:element>
+                </xs:sequence>
+                <xs:attribute name="T" type="xs:string" fixed="FEModal" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="FEMultiStepStatic" mixed="false" >
+        <xs:complexContent>
+            <xs:extension base="Object">
+                <xs:sequence minOccurs="0" maxOccurs="unbounded" >
+                    <xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+                        <xs:alternative test="@N='LoadType'" type="ParamLoadType" />
+                        <xs:alternative test="@N='LoadName'" type="ParamLoadName" />
+                        <xs:alternative test="@N='ScaleFactor'" type="ParamScaleFactor" />
+                        <xs:alternative type="xs:error" />
+                    </xs:element>
+                </xs:sequence>
+                <xs:attribute name="T" type="xs:string" fixed="FEMultiStepStatic" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="FEDirectIntegrationHistory" mixed="false" >
+        <xs:complexContent>
+            <xs:extension base="Object">
+                <xs:sequence minOccurs="0" maxOccurs="unbounded" >
+                    <xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+                        <xs:alternative test="@N='NumStep'" type="ParamNumStep" />
+                        <xs:alternative test="@N='StepSize'" type="ParamStepSize" />
+                        <xs:alternative test="@N='LoadType'" type="ParamLoadType" />
+                        <xs:alternative test="@N='LoadName'" type="ParamLoadName" />
+                        <xs:alternative test="@N='Function'" type="ParamFunction" />
+                        <xs:alternative test="@N='ScaleFactor'" type="ParamScaleFactor" />
+                        <xs:alternative test="@N='TimeFactor'" type="ParamTimeFactor" />
+                        <xs:alternative test="@N='ArrivalTime'" type="ParamArrivalTime" />
+                        <xs:alternative test="@N='IntegrationMethod'" type="ParamIntegrationMethod" />
+                        <xs:alternative test="@N='Gamma'" type="ParamGamma" />
+                        <xs:alternative test="@N='Beta'" type="ParamBeta" />
+                        <xs:alternative test="@N='Alpha'" type="ParamAlpha" />
+                        <xs:alternative type="xs:error" />
+                    </xs:element>
+                </xs:sequence>
+                <xs:attribute name="T" type="xs:string" fixed="FEDirectIntegrationHistory" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    
+    
+    
+    <!-- Sensor -->
+
+    <xs:complexType name="ParamSensorMetadata">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="SensorMetadata" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ParamSensorLocation">
+        <xs:complexContent>
+            <xs:extension base="Parameter">
+                <xs:attribute name="N" type="xs:string" fixed="SensorLocation" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    
+    <xs:complexType name="Sensor" mixed="false" >
+        <xs:complexContent>
+            <xs:extension base="Object">
+                 <!-- <xs:sequence minOccurs="0" maxOccurs="unbounded" >
+                    <xs:element name="P" minOccurs="0" maxOccurs="unbounded">
+                        <xs:alternative test="@N='SensorMetadata'" type="ParamSensorMetadata" />
+                        <xs:alternative test="@N='SensorLocation'" type="ParamSensorLocation" />
+                        <xs:alternative type="xs:error" />
+                    </xs:element>
+                </xs:sequence> -->
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="SensorMetadata" mixed="false" >
+        <xs:complexContent>
+            <xs:extension base="Object">
+                <xs:sequence minOccurs="0" maxOccurs="unbounded" >
+                    <xs:element name="Metadata" minOccurs="0" maxOccurs="unbounded" type="SensorMetadataType"/>
+                </xs:sequence>
+                <xs:attribute name="T" type="xs:string" fixed="SensorMetadata" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="SensorMetadataType" mixed="false"  >
+        <xs:complexContent>
+            <xs:extension base="sml:DescribedObjectType">
+                <xs:sequence minOccurs="0" maxOccurs="unbounded" >
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="SensorLocation" mixed="false" >
+        <xs:complexContent>
+            <xs:extension base="Object">
+                <xs:sequence minOccurs="0" maxOccurs="unbounded" >
+                    <xs:element name="Location" minOccurs="0" maxOccurs="unbounded" type="SensorLocationType"/>
+                </xs:sequence>
+                <xs:attribute name="T" type="xs:string" fixed="SensorLocation" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="SensorLocationType" mixed="false"  >
+        <xs:complexContent>
+            <xs:extension base="sml:PositionUnionPropertyType">
+                <xs:sequence minOccurs="0" maxOccurs="unbounded" >
+                    <xs:element name="TargetObject" minOccurs="0" maxOccurs="unbounded"  type="xs:string" />
+                    <xs:element name="FENode" minOccurs="0" maxOccurs="1"  type="xs:string" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="SingleAxisAccelerometer" mixed="false"  >
+        <xs:complexContent>
+            <xs:extension base="Sensor">
+                <xs:sequence>
+                    <xs:element name="Timestamp" minOccurs="0" maxOccurs="1" type="xs:dateTime" />
+                    <xs:element name="Input" minOccurs="0" maxOccurs="1" type="SingleAxisAccelerometerInputType" />
+                    <xs:element name="Output" minOccurs="0" maxOccurs="1" type="SingleAxisAccelerometerOutputType" />
+                    <xs:element name="Parameter" minOccurs="0" maxOccurs="1" type="SingleAxisAccelerometerParameterType" />
+                   <!--  <xs:element name="DataInterface" minOccurs="0" maxOccurs="1" type="sml:DataInterfaceType" /> -->
+                    <xs:element name="DataLink" minOccurs="0" maxOccurs="1" type="xs:anyType" />
+                </xs:sequence>
+                <xs:attribute name="T" type="xs:string" fixed="SingleAxisAccelerometer" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="SingleAxisAccelerometerInputType">
+        <xs:sequence minOccurs="0">
+            <xs:element name="RawAccelerationData" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="SingleAxisAccelerometerOutputType">
+        <xs:sequence minOccurs="0">
+            <xs:element name="Acceleration" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="SingleAxisAccelerometerParameterType">
+        <xs:sequence minOccurs="0">
+            <xs:element name="Gain" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+            <xs:element name="ConversionFactor" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+            <xs:element name="SamplingRate" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="StrainGauge" mixed="false"  >
+        <xs:complexContent>
+            <xs:extension base="Sensor">
+                <xs:sequence>
+                    <xs:element name="Timestamp" minOccurs="0" maxOccurs="1" type="xs:dateTime" />
+                    <xs:element name="Input" minOccurs="0" maxOccurs="1" type="StrainGaugeInputType" />
+                    <xs:element name="Output" minOccurs="0" maxOccurs="1" type="StrainGaugeOutputType" />
+                    <xs:element name="Parameter" minOccurs="0" maxOccurs="1" type="StrainGaugeParameterType" />
+                    <!--<xs:element name="DataInterface" minOccurs="0" maxOccurs="1" type="sml:DataInterfaceType" /> -->
+                    <xs:element name="DataLink" minOccurs="0" maxOccurs="1" type="xs:anyType" />
+                </xs:sequence>
+                <xs:attribute name="T" type="xs:string" fixed="StrainGauge" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="StrainGaugeInputType">
+        <xs:sequence minOccurs="0">
+            <xs:element name="RawStrainData" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="StrainGaugeOutputType">
+        <xs:sequence minOccurs="0">
+            <xs:element name="Strain" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="StrainGaugeParameterType">
+        <xs:sequence minOccurs="0">
+            <xs:element name="Gain" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+            <xs:element name="ConversionFactor" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+            <xs:element name="SamplingRate" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    
+    <xs:complexType name="TriAxisAccelerometer" mixed="false"  >
+        <xs:complexContent>
+            <xs:extension base="Sensor">
+                <xs:sequence minOccurs="0" maxOccurs="unbounded" >
+                    <xs:element name="Timestamp" minOccurs="0" maxOccurs="1" type="xs:dateTime" />
+                    <xs:element name="Input" minOccurs="0" maxOccurs="1" type="TriAxisAccelerometerInputType" />
+                    <xs:element name="Output" minOccurs="0" maxOccurs="1" type="TriAxisAccelerometerOutputType" />
+                    <xs:element name="Parameter" minOccurs="0" maxOccurs="1" type="TriAxisAccelerometerParameterType" />
+                    <!--<xs:element name="DataInterface" minOccurs="0" maxOccurs="1" type="sml:DataInterfaceType" /> -->
+                    <xs:element name="DataLink" minOccurs="0" maxOccurs="1" type="xs:anyType" />
+                </xs:sequence>
+                <xs:attribute name="T" type="xs:string" fixed="TriAxisAccelerometer" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="TriAxisAccelerometerInputType">
+        <xs:sequence minOccurs="0">
+            <xs:element name="RawAccelerationDataX" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+            <xs:element name="RawAccelerationDataY" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+            <xs:element name="RawAccelerationDataZ" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="TriAxisAccelerometerOutputType">
+        <xs:sequence minOccurs="0">
+            <xs:element name="AccelerationX" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+            <xs:element name="AccelerationY" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+            <xs:element name="AccelerationZ" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="TriAxisAccelerometerParameterType">
+        <xs:sequence minOccurs="0">
+            <xs:element name="Gain" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+            <xs:element name="ConversionFactor" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+            <xs:element name="SamplingRate" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="Thermistor" mixed="false"  >
+        <xs:complexContent>
+            <xs:extension base="Sensor">
+                <xs:sequence minOccurs="0" maxOccurs="unbounded" >
+                    <xs:element name="Timestamp" minOccurs="0" maxOccurs="1" type="xs:dateTime" />
+                    <xs:element name="Input" minOccurs="0" maxOccurs="1" type="ThermistorInputType" />
+                    <xs:element name="Output" minOccurs="0" maxOccurs="1" type="ThermistorOutputType" />
+                    <xs:element name="Parameter" minOccurs="0" maxOccurs="1" type="ThermistorParameterType" />
+                    <!--<xs:element name="DataInterface" minOccurs="0" maxOccurs="1" type="sml:DataInterfaceType" /> -->
+                    <xs:element name="DataLink" minOccurs="0" maxOccurs="1" type="xs:anyType" />
+                </xs:sequence>
+                <xs:attribute name="T" type="xs:string" fixed="Thermistor" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ThermistorInputType">
+        <xs:sequence minOccurs="0">
+            <xs:element name="RawTemperatureData" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ThermistorOutputType">
+        <xs:sequence minOccurs="0">
+            <xs:element name="Temperature" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ThermistorParameterType">
+        <xs:sequence minOccurs="0">
+            <xs:element name="C1" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+            <xs:element name="C2" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+            <xs:element name="C3" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+            <xs:element name="SamplingRate" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="Camera" mixed="false"  >
+        <xs:complexContent>
+            <xs:extension base="Sensor">
+                <xs:sequence minOccurs="0" maxOccurs="unbounded" >
+                    <xs:element name="Timestamp" minOccurs="0" maxOccurs="1" type="xs:dateTime" />
+                    <xs:element name="Output" minOccurs="0" maxOccurs="1" type="CameraOutputType" />
+                    <xs:element name="Parameter" minOccurs="0" maxOccurs="1" type="CameraParameterType" />
+                    <!--  <xs:element name="DataInterface" minOccurs="0" maxOccurs="1" type="sml:DataInterfaceType" /> -->
+                    <xs:element name="DataLink" minOccurs="0" maxOccurs="1" type="xs:anyType" />
+                </xs:sequence>
+                <xs:attribute name="T" type="xs:string" fixed="Camera" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="CameraOutputType">
+        <xs:sequence minOccurs="0">
+            <xs:element name="Image" minOccurs="0" maxOccurs="1" type="swe:DataArrayType" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="CameraParameterType">
+        <xs:sequence minOccurs="0">
+            <xs:element name="FramePerSecond" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+            <xs:element name="Resolution" minOccurs="0" maxOccurs="1" type="swe:QuantityType" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,19 @@
+{
+	"N":"newinspection",
+	"inspection_date":"2014-08-01",
+	"inspection_project":"2014 annual inspection",
+	"inspection_type":"NBI quantitative rating",
+	"inspected_item":"RCDeck",
+	"target_object": "ea775c21-7c5b-11e6-8303-3c15c2e54ea0",
+	"NBE_code":"12",
+	"rank":"A",
+	"total_quantity":300,
+	"stage1":250,
+	"stage2":50,
+	"quantity_uom":"m2",
+	"damage_type":"concrete crack",
+	"damage_amount":0.5,
+	"damage_uom":"m",
+	"note":"Good condition.",
+	"image":"images/inspection_01.jpg"
+}

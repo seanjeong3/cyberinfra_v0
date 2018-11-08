@@ -1,0 +1,1140 @@
+<?xml version="1.0" ?>
+<O N="TRB_GEO" T="Project">
+   <O N="Units" T="Group">
+      <P N="uid" V="urn:uuid:1366b905-7e2b-11e6-b4a5-3c15c2e54ea0"/>
+      <O N="Internal" T="Unit">
+         <P N="Length" T="Text" V="INCH"/>
+         <P N="Force" T="Text" V="KIPS"/>
+         <P N="Angle" T="Text" V="DEGREES"/>
+         <P N="Temperature" T="Text" V="FAHRENHEIT"/>
+      </O>
+      <O N="Geometry and Load" T="Unit">
+         <P N="Length" T="Text" V="INCH"/>
+         <P N="Force" T="Text" V="KIPS"/>
+         <P N="Angle" T="Text" V="DEGREES"/>
+         <P N="Temperature" T="Text" V="FAHRENHEIT"/>
+      </O>
+      <O N="Properties" T="Unit">
+         <P N="Length" T="Text" V="INCH"/>
+         <P N="Force" T="Text" V="KIPS"/>
+         <P N="Angle" T="Text" V="DEGREES"/>
+         <P N="Temperature" T="Text" V="FAHRENHEIT"/>
+      </O>
+   </O>
+   <O N="Materials" T="Group">
+      <P N="uid" V="urn:uuid:136c7a91-7e2b-11e6-bc9b-3c15c2e54ea0"/>
+      <O N="Steel" T="Material">
+         <P N="E" UC="Properties" UT="Stress" V="29000"/>
+         <P N="Nu" V="0.3"/>
+         <P N="d" UC="Properties" UT="Density" V="0.000284"/>
+         <P N="a" V="0.0000065"/>
+         <P N="Fy" UC="Properties" UT="Stress" V="36"/>
+         <P N="Fu" UC="Properties" UT="Stress" V="58"/>
+         <P N="Type" T="Text" V="steel"/>
+      </O>
+      <O N="Concrete" T="Material">
+         <P N="E" UC="Properties" UT="Stress" V="3607.1"/>
+         <P N="Nu" V="0.17"/>
+         <P N="d" UC="Properties" UT="Density" V="0.0000868"/>
+         <P N="a" V="0.000008"/>
+         <P N="Fc28" UC="Properties" UT="Stress" V="4"/>
+         <P N="Type" T="Text" V="concrete"/>
+      </O>
+   </O>
+   <O N="Geometry" T="Group">
+      <P N="uid" V="urn:uuid:136e0a9c-7e2b-11e6-beb9-3c15c2e54ea0"/>
+      <O N="Params" T="Group">
+         <P N="uid" V="urn:uuid:136e1102-7e2b-11e6-b5e5-3c15c2e54ea0"/>
+         <P N="EndSpanLength" V="48*12"/>
+         <P N="MiddleSpanLength" V="128*12"/>
+         <P N="ExpansionLength" V="3*12"/>
+         <P N="Pier1Location" V="42*12"/>
+         <P N="Pier2Location" V="182*12"/>
+      </O>
+      <O N="Deck" T="Group">
+         <P N="uid" V="urn:uuid:136e8dfa-7e2b-11e6-be96-3c15c2e54ea0"/>
+         <O N="RCDeck" T="Group">
+            <P N="uid" V="urn:uuid:136e8f6b-7e2b-11e6-bf81-3c15c2e54ea0"/>
+            <O N="Deck Template" T="Group">
+               <P N="uid" V="urn:uuid:136e9551-7e2b-11e6-b962-3c15c2e54ea0"/>
+               <P N="ObjTypeDef" V="1"/>
+               <P N="Opacity" V="0.4"/>
+               <P D="Material" N="Material" T="Material" V="Concrete"/>
+               <P N="t" V="8"/>
+               <P N="l" V="EndSpanLength"/>
+               <O T="Surface">
+                  <P N="Thickness" V="t"/>
+                  <O T="Point" X="0-6" Y="9.5" Z="27+t+0.5/2"/>
+                  <O T="Point" X="l-6" Y="9.5" Z="27+t+0.5/2"/>
+                  <O T="Point" X="l+64*6+6" Y="-99*6-9.5" Z="27+t+0.5/2"/>
+                  <O T="Point" X="0+64*6+6" Y="-99*6-9.5" Z="27+t+0.5/2"/>
+               </O>
+            </O>
+            <O Extends="Deck Template" N="Deck1" T="Group">
+               <P N="uid" V="urn:uuid:13721cd7-7e2b-11e6-b25e-3c15c2e54ea0"/>
+            </O>
+            <O Extends="Deck Template" N="Deck2" T="Group" X="EndSpanLength">
+               <P N="uid" V="urn:uuid:1372ae07-7e2b-11e6-a2b4-3c15c2e54ea0"/>
+               <P N="l" V="MiddleSpanLength"/>
+            </O>
+            <O Extends="Deck Template" N="Deck3" T="Group" X="EndSpanLength+MiddleSpanLength">
+               <P N="uid" V="urn:uuid:137342b3-7e2b-11e6-adf1-3c15c2e54ea0"/>
+            </O>
+         </O>
+      </O>
+      <O N="SuperStructure" T="Group">
+         <P N="uid" V="urn:uuid:1374f54f-7e2b-11e6-ac62-3c15c2e54ea0"/>
+         <O N="SteelGirder" T="Group">
+            <P N="uid" V="urn:uuid:1374f707-7e2b-11e6-b1bd-3c15c2e54ea0"/>
+            <O N="SuperStructureTemplate" T="Group">
+               <P N="uid" V="urn:uuid:1374fa47-7e2b-11e6-a9c6-3c15c2e54ea0"/>
+               <P N="ObjTypeDef" V="1"/>
+               <O N="IBeamType1" T="Group">
+                  <P N="uid" V="urn:uuid:1374fb54-7e2b-11e6-b5a5-3c15c2e54ea0"/>
+                  <O N="IBeamType Param" T="Group">
+                     <P N="uid" V="urn:uuid:13750157-7e2b-11e6-95f4-3c15c2e54ea0"/>
+                     <P D="Material" N="Material" T="Material" V="STEEL"/>
+                     <P N="Length" V="EndSpanLength-ExpansionLength/2"/>
+                     <P N="w" V="12"/>
+                     <P N="h" V="54"/>
+                     <P N="TopFlangeThickness" V="0.5"/>
+                     <P N="WebThickness" V="0.5"/>
+                     <P N="BottomFlangeThickness" V="0.625"/>
+                  </O>
+                  <O N="TopFlange" T="Surface">
+                     <P N="Thickness" V="TopFlangeThickness"/>
+                     <O T="Point" X="0" Y="-w/2" Z="h/2-TopFlangeThickness/2"/>
+                     <O T="Point" X="Length" Y="-w/2" Z="h/2-TopFlangeThickness/2"/>
+                     <O T="Point" X="Length" Y="w/2" Z="h/2-TopFlangeThickness/2"/>
+                     <O T="Point" X="0" Y="w/2" Z="h/2-TopFlangeThickness/2"/>
+                  </O>
+                  <O N="Web" T="Surface">
+                     <P N="Thickness" V="h-TopFlangeThickness/2-BottomFlangeThickness/2"/>
+                     <O T="Point" X="0" Y="-WebThickness/2" Z="-h/2+BottomFlangeThickness/2"/>
+                     <O T="Point" X="Length" Y="-WebThickness/2" Z="-h/2+BottomFlangeThickness/2"/>
+                     <O T="Point" X="Length" Y="WebThickness/2" Z="-h/2+BottomFlangeThickness/2"/>
+                     <O T="Point" X="0" Y="WebThickness/2" Z="-h/2+BottomFlangeThickness/2"/>
+                  </O>
+                  <O N="BottomFlange" T="Surface">
+                     <P N="Thickness" V="BottomFlangeThickness"/>
+                     <O T="Point" X="0" Y="-w/2" Z="-h/2-BottomFlangeThickness/2"/>
+                     <O T="Point" X="Length" Y="-w/2" Z="-h/2-BottomFlangeThickness/2"/>
+                     <O T="Point" X="Length" Y="w/2" Z="-h/2-BottomFlangeThickness/2"/>
+                     <O T="Point" X="0" Y="w/2" Z="-h/2-BottomFlangeThickness/2"/>
+                  </O>
+               </O>
+               <O Extends="IBeamType1" N="IBeamType2" T="Group">
+                  <P N="uid" V="urn:uuid:137d4beb-7e2b-11e6-9564-3c15c2e54ea0"/>
+                  <P N="Length" V="22*12-ExpansionLength/2"/>
+                  <P N="w" V="19"/>
+                  <P N="h" V="54"/>
+                  <P N="TopFlangeThickness" V="1"/>
+                  <P N="WebThickness" V="0.5625"/>
+                  <P N="BottomFlangeThickness" V="1"/>
+               </O>
+               <O Extends="IBeamType1" N="IBeamType3" T="Group">
+                  <P N="uid" V="urn:uuid:137de84a-7e2b-11e6-ad7b-3c15c2e54ea0"/>
+                  <P N="Length" V="MiddleSpanLength-44*12"/>
+                  <P N="w" V="19"/>
+                  <P N="h" V="54"/>
+                  <P N="TopFlangeThickness" V="1"/>
+                  <P N="WebThickness" V="0.5625"/>
+                  <P N="BottomFlangeThickness" V="1.875"/>
+               </O>
+               <O N="ExpansionType1" T="Group">
+                  <P N="uid" V="urn:uuid:137e641e-7e2b-11e6-983d-3c15c2e54ea0"/>
+                  <P N="ObjTypeDef" V="1"/>
+                  <O N="Expansion1 Params" T="Group">
+                     <P N="uid" V="urn:uuid:137e6ee3-7e2b-11e6-a84f-3c15c2e54ea0"/>
+                     <P D="Material" N="Material" T="Material" V="STEEL"/>
+                     <P N="l1" V="8"/>
+                     <P N="l2" V="17"/>
+                     <P N="h1" V="8.5"/>
+                     <P N="h2" V="-8.5"/>
+                     <P N="w" V="12"/>
+                     <P N="h" V="54"/>
+                     <P N="TopFlangeThickness" V="0.5"/>
+                     <P N="WebThickness" V="2"/>
+                     <P N="BottomFlangeThickness" V="0.625"/>
+                  </O>
+                  <O N="TopFlange" T="Surface">
+                     <P N="Thickness" V="TopFlangeThickness"/>
+                     <O T="Point" X="0" Y="-w/2" Z="h/2-TopFlangeThickness/2"/>
+                     <O T="Point" X="l1+l2" Y="-w/2" Z="h/2-TopFlangeThickness/2"/>
+                     <O T="Point" X="l1+l2" Y="w/2" Z="h/2-TopFlangeThickness/2"/>
+                     <O T="Point" X="0" Y="w/2" Z="h/2-TopFlangeThickness/2"/>
+                  </O>
+                  <O N="Expansion" T="Surface">
+                     <P N="Thickness" V="WebThickness"/>
+                     <O T="Point" X="0" Y="-WebThickness/2" Z="h/2-TopFlangeThickness/2"/>
+                     <O T="Point" X="l1+l2" Y="-WebThickness/2" Z="h/2-TopFlangeThickness/2"/>
+                     <O T="Point" X="l1+l2" Y="-WebThickness/2" Z="h1"/>
+                     <O T="Point" X="l1" Y="-WebThickness/2" Z="h2"/>
+                     <O T="Point" X="l1" Y="-WebThickness/2" Z="-h/2+BottomFlangeThickness/2"/>
+                     <O T="Point" X="0" Y="-WebThickness/2" Z="-h/2+BottomFlangeThickness/2"/>
+                     <O RX="PI/2" T="Circle" X="ExpansionLength/2" Y="-WebThickness/2" Z="15">
+                        <P N="IsCutout" V="1"/>
+                        <P N="Radius" V="1"/>
+                     </O>
+                  </O>
+                  <O N="BottomFlange" T="Surface">
+                     <P N="Thickness" V="BottomFlangeThickness"/>
+                     <O T="Point" X="0" Y="-w/2" Z="-h/2-BottomFlangeThickness/2"/>
+                     <O T="Point" X="l1" Y="-w/2" Z="-h/2-BottomFlangeThickness/2"/>
+                     <O T="Point" X="l1" Y="w/2" Z="-h/2-BottomFlangeThickness/2"/>
+                     <O T="Point" X="0" Y="w/2" Z="-h/2-BottomFlangeThickness/2"/>
+                  </O>
+               </O>
+               <O N="ExpansionType2" T="Group">
+                  <P N="uid" V="urn:uuid:13886ab8-7e2b-11e6-845f-3c15c2e54ea0"/>
+                  <O N="Expansion2 Params" T="Group">
+                     <P N="uid" V="urn:uuid:13887440-7e2b-11e6-8bcc-3c15c2e54ea0"/>
+                     <P D="Material" N="Material" T="Material" V="STEEL"/>
+                     <P N="l1" V="8"/>
+                     <P N="l2" V="17"/>
+                     <P N="h1" V="8.5"/>
+                     <P N="h2" V="-8.5"/>
+                     <P N="w" V="18"/>
+                     <P N="h" V="54"/>
+                     <P N="TopFlangeThickness" V="1"/>
+                     <P N="WebThickness" V="2"/>
+                     <P N="BottomFlangeThickness" V="1"/>
+                  </O>
+                  <O N="TopFlange" T="Surface">
+                     <P N="Thickness" V="TopFlangeThickness"/>
+                     <O T="Point" X="l2" Y="-w/2" Z="h/2-TopFlangeThickness/2"/>
+                     <O T="Point" X="l1+l2" Y="-w/2" Z="h/2-TopFlangeThickness/2"/>
+                     <O T="Point" X="l1+l2" Y="w/2" Z="h/2-TopFlangeThickness/2"/>
+                     <O T="Point" X="l2" Y="w/2" Z="h/2-TopFlangeThickness/2"/>
+                  </O>
+                  <O N="Expansion" T="Surface">
+                     <P N="Thickness" V="WebThickness"/>
+                     <O T="Point" X="l2" Y="-WebThickness/2" Z="h/2-TopFlangeThickness/2"/>
+                     <O T="Point" X="l1+l2" Y="-WebThickness/2" Z="h/2-TopFlangeThickness/2"/>
+                     <O T="Point" X="l1+l2" Y="-WebThickness/2" Z="-h/2+BottomFlangeThickness/2"/>
+                     <O T="Point" X="0" Y="-WebThickness/2" Z="-h/2+BottomFlangeThickness/2"/>
+                     <O T="Point" X="0" Y="-WebThickness/2" Z="h2"/>
+                     <O T="Point" X="l2" Y="-WebThickness/2" Z="h1"/>
+                     <O RX="PI/2" T="Circle" X="l1+l2-ExpansionLength/2" Y="-WebThickness/2" Z="-15">
+                        <P N="IsCutout" V="1"/>
+                        <P N="Radius" V="1"/>
+                     </O>
+                  </O>
+                  <O N="BottomFlange" T="Surface">
+                     <P N="Thickness" V="BottomFlangeThickness"/>
+                     <O T="Point" X="0" Y="-w/2" Z="-h/2-BottomFlangeThickness/2"/>
+                     <O T="Point" X="l1+l2" Y="-w/2" Z="-h/2-BottomFlangeThickness/2"/>
+                     <O T="Point" X="l1+l2" Y="w/2" Z="-h/2-BottomFlangeThickness/2"/>
+                     <O T="Point" X="0" Y="w/2" Z="-h/2-BottomFlangeThickness/2"/>
+                  </O>
+               </O>
+               <O N="HangerSetType" T="Group">
+                  <P N="uid" V="urn:uuid:1391fd75-7e2b-11e6-8c55-3c15c2e54ea0"/>
+                  <O N="Hanger Params" T="Group">
+                     <P N="uid" V="urn:uuid:13920526-7e2b-11e6-8e14-3c15c2e54ea0"/>
+                     <P D="Material" N="Material" T="Material" V="STEEL"/>
+                     <P N="WebThickness" V="2"/>
+                     <P N="H" V="37"/>
+                     <P N="h" V="15"/>
+                     <P N="t" V="1"/>
+                     <P N="w" V="7"/>
+                     <P N="r" V="1.5"/>
+                  </O>
+                  <O N="Hanger1" T="Surface">
+                     <P N="Color" T="Text" V="#ff0000"/>
+                     <P N="Thickness" V="t"/>
+                     <O T="Point" X="w/2-r" Y="WebThickness/2" Z="H/2"/>
+                     <O T="Point" X="w/2" Y="WebThickness/2" Z="H/2-r"/>
+                     <O T="Point" X="w/2" Y="WebThickness/2" Z="-H/2+r"/>
+                     <O T="Point" X="w/2-r" Y="WebThickness/2" Z="-H/2"/>
+                     <O T="Point" X="-w/2+r" Y="WebThickness/2" Z="-H/2"/>
+                     <O T="Point" X="-w/2" Y="WebThickness/2" Z="-H/2+r"/>
+                     <O T="Point" X="-w/2" Y="WebThickness/2" Z="H/2-r"/>
+                     <O T="Point" X="-w/2+r" Y="WebThickness/2" Z="H/2"/>
+                     <O RX="PI/2" T="Circle" X="0" Y="WebThickness/2" Z="h">
+                        <P N="IsCutout" V="1"/>
+                        <P N="Radius" V="1"/>
+                     </O>
+                     <O RX="PI/2" T="Circle" X="0" Y="WebThickness/2" Z="-h">
+                        <P N="IsCutout" V="1"/>
+                        <P N="Radius" V="1"/>
+                     </O>
+                  </O>
+                  <O Extends="Hanger1" N="Hanger2" T="Surface" Y="-WebThickness-t"/>
+                  <O N="Bolt1" T="Surface" Z="h">
+                     <P N="Color" T="Text" V="#ffff00"/>
+                     <P N="Thickness" V="t*5+WebThickness"/>
+                     <O RX="PI/2" T="Circle" X="0" Y="-t*2.5-WebThickness/2">
+                        <P N="Radius" V="1"/>
+                     </O>
+                  </O>
+                  <O Extends="Bolt1" N="Bolt2" T="Surface" Z="-h"/>
+                  <O N="Nut1" T="Surface" Z="h">
+                     <P N="Color" T="Text" V="#ffff00"/>
+                     <P N="Thickness" V="t"/>
+                     <O RX="PI/2" T="Circle" X="0" Y="WebThickness/2+t">
+                        <P N="Radius" V="2"/>
+                     </O>
+                     <O RX="PI/2" T="Circle" X="0" Y="WebThickness/2+t">
+                        <P N="IsCutout" V="1"/>
+                        <P N="Radius" V="1"/>
+                     </O>
+                  </O>
+                  <O Extends="Nut1" N="Nut2" RX="PI" T="Surface"/>
+                  <O Extends="Nut1" N="Nut3" T="Surface" Z="-h"/>
+                  <O Extends="Nut3" N="Nut4" RX="PI" T="Surface"/>
+               </O>
+               <O N="BracingType1" T="Group">
+                  <P N="uid" V="urn:uuid:139e010a-7e2b-11e6-bba0-3c15c2e54ea0"/>
+                  <O N="LowerBracing1" T="Line">
+                     <P N="Color" T="Text" V="#0000ff"/>
+                     <P N="z1" V="-23"/>
+                     <P N="z2" V="-23"/>
+                     <P N="y" V="49"/>
+                     <O T="Point" X="0" Y="y" Z="z1"/>
+                     <O T="Point" X="0" Y="-y" Z="z2"/>
+                     <O T="Section">
+                        <O T="Shape">
+                           <O T="Point" X="-1.4375" Y="-1.6825"/>
+                           <O T="Point" X="1.75" Y="-1.6825"/>
+                           <O T="Point" X="1.75" Y="-2"/>
+                           <O T="Point" X="-1.75" Y="-2"/>
+                           <O T="Point" X="-1.75" Y="2"/>
+                           <O T="Point" X="-1.4375" Y="2"/>
+                        </O>
+                     </O>
+                  </O>
+                  <O Extends="LowerBracing1" N="DiagonalBracing1_1" T="Line">
+                     <P N="y" V="46"/>
+                     <P N="z1" V="18"/>
+                     <P N="z2" V="-18"/>
+                  </O>
+                  <O Extends="LowerBracing1" N="DiagonalBracing1_2" T="Line">
+                     <P N="y" V="46"/>
+                     <P N="z1" V="-18"/>
+                     <P N="z2" V="18"/>
+                  </O>
+               </O>
+               <O N="BracingType2" T="Line">
+                  <P N="l" V="MiddleSpanLength/10"/>
+                  <P N="Color" T="Text" V="#ff00ff"/>
+                  <P N="y" V="46"/>
+                  <P N="z" V="-25"/>
+                  <P N="d" V="1"/>
+                  <O T="Point" X="0" Y="-y*d" Z="z"/>
+                  <O T="Point" X="l" Y="y*d" Z="z"/>
+                  <O T="Section">
+                     <O T="Shape">
+                        <O T="Point" X="2.875" Y="0"/>
+                        <O T="Point" X="2.875" Y="-0.4375"/>
+                        <O T="Point" X="0.125" Y="-0.4375"/>
+                        <O T="Point" X="0.125" Y="-5.125"/>
+                        <O T="Point" X="-0.125" Y="-5.125"/>
+                        <O T="Point" X="-0.125" Y="-0.4375"/>
+                        <O T="Point" X="-2.875" Y="-0.4375"/>
+                        <O T="Point" X="-2.875" Y="0"/>
+                     </O>
+                  </O>
+               </O>
+               <O N="BracingType3" T="Group">
+                  <P N="uid" V="urn:uuid:13aa8dc7-7e2b-11e6-a81a-3c15c2e54ea0"/>
+                  <O N="LowerBracing3" T="Line">
+                     <P N="Color" T="Text" V="#faaa00"/>
+                     <P N="x1" V="-29.7"/>
+                     <P N="x2" V="29.7"/>
+                     <P N="y1" V="-46"/>
+                     <P N="y2" V="46"/>
+                     <P N="z1" V="-23"/>
+                     <P N="z2" V="-23"/>
+                     <O T="Point" X="x1" Y="y1" Z="z1"/>
+                     <O T="Point" X="x2" Y="y2" Z="z2"/>
+                     <O T="Section">
+                        <O T="Shape">
+                           <O T="Point" X="-2.125" Y="-2.125"/>
+                           <O T="Point" X="2.5" Y="-2.125"/>
+                           <O T="Point" X="2.5" Y="-2.5"/>
+                           <O T="Point" X="-2.5" Y="-2.5"/>
+                           <O T="Point" X="-2.5" Y="2.5"/>
+                           <O T="Point" X="-2.125" Y="2.5"/>
+                        </O>
+                     </O>
+                  </O>
+                  <O Extends="LowerBracing3" N="DiagonalBracing3_1" T="Line">
+                     <P N="x2" V="0"/>
+                     <P N="y2" V="0"/>
+                     <P N="z2" V="23"/>
+                  </O>
+                  <O Extends="LowerBracing3" N="DiagonalBracing3_2" T="Line">
+                     <P N="x1" V="0"/>
+                     <P N="y1" V="0"/>
+                     <P N="z1" V="23"/>
+                  </O>
+                  <O N="UpperBracing3" T="Line">
+                     <P N="x1" V="-29.7"/>
+                     <P N="x2" V="29.7"/>
+                     <P N="y1" V="-46"/>
+                     <P N="y2" V="46"/>
+                     <P N="z1" V="20"/>
+                     <P N="z2" V="20"/>
+                     <P N="Color" T="Text" V="#faaa00"/>
+                     <O T="Point" X="x1" Y="y1" Z="z1"/>
+                     <O T="Point" X="x2" Y="y2" Z="z2"/>
+                     <O T="Section">
+                        <O T="Shape">
+                           <O T="Point" X="-1.1365" Y="5.613"/>
+                           <O T="Point" X="1.5235" Y="5.613"/>
+                           <O T="Point" X="1.5235" Y="6"/>
+                           <O T="Point" X="-1.5235" Y="6"/>
+                           <O T="Point" X="-1.5235" Y="-6"/>
+                           <O T="Point" X="1.5235" Y="-6"/>
+                           <O T="Point" X="1.5235" Y="-5.613"/>
+                           <O T="Point" X="-1.1365" Y="-5.613"/>
+                        </O>
+                     </O>
+                  </O>
+               </O>
+               <O N="BracingType4" T="Group">
+                  <P N="uid" V="urn:uuid:13b72eb5-7e2b-11e6-b07d-3c15c2e54ea0"/>
+                  <O N="LowerBracing4" T="Line">
+                     <P N="Color" T="Text" V="#faff00"/>
+                     <P N="x1" V="-29.7"/>
+                     <P N="x2" V="29.7"/>
+                     <P N="y1" V="-46"/>
+                     <P N="y2" V="46"/>
+                     <P N="z1" V="-23"/>
+                     <P N="z2" V="-23"/>
+                     <O T="Point" X="x1" Y="y1" Z="z1"/>
+                     <O T="Point" X="x2" Y="y2" Z="z2"/>
+                     <O T="Section">
+                        <O T="Shape">
+                           <O T="Point" X="-0.9375" Y="-1.1875"/>
+                           <O T="Point" X="1.25" Y="-1.1875"/>
+                           <O T="Point" X="1.25" Y="-1.5"/>
+                           <O T="Point" X="-1.25" Y="-1.5"/>
+                           <O T="Point" X="-1.25" Y="1.5"/>
+                           <O T="Point" X="-0.9375" Y="1.5"/>
+                        </O>
+                     </O>
+                  </O>
+                  <O Extends="LowerBracing4" N="DiagonalBracing4_1" T="Line">
+                     <P N="z2" V="23"/>
+                  </O>
+                  <O Extends="LowerBracing4" N="DiagonalBracing4_2" T="Line">
+                     <P N="z1" V="23"/>
+                  </O>
+                  <O Extends="LowerBracing4" N="UpperBracing4" T="Line">
+                     <P N="z1" V="23"/>
+                     <P N="z2" V="23"/>
+                  </O>
+               </O>
+            </O>
+            <O N="Girder1" T="Group">
+               <P N="uid" V="urn:uuid:13be81ca-7e2b-11e6-a7b7-3c15c2e54ea0"/>
+               <O N="Girder1:Span1" T="Group">
+                  <P N="uid" V="urn:uuid:13be8382-7e2b-11e6-87c3-3c15c2e54ea0"/>
+                  <O Extends="IBeamType1" T="Group">
+                     <P N="uid" V="urn:uuid:13be845e-7e2b-11e6-8b98-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder1:Expansion1-1" T="Group">
+                  <P N="uid" V="urn:uuid:13bf84e3-7e2b-11e6-b360-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType1" T="Group" X="EndSpanLength-ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:13bf8661-7e2b-11e6-ae99-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder1:Expansion1-2" T="Group">
+                  <P N="uid" V="urn:uuid:13c08dd9-7e2b-11e6-9341-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType2" T="Group" X="EndSpanLength-7">
+                     <P N="uid" V="urn:uuid:13c08f2e-7e2b-11e6-95d5-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder1:Hanger1" T="Group">
+                  <P N="uid" V="urn:uuid:13c182a8-7e2b-11e6-935a-3c15c2e54ea0"/>
+                  <O Extends="HangerSetType" T="Group" X="EndSpanLength">
+                     <P N="uid" V="urn:uuid:13c183f0-7e2b-11e6-bd77-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder1:Span2-1" T="Group">
+                  <P N="uid" V="urn:uuid:13c281ee-7e2b-11e6-b0f4-3c15c2e54ea0"/>
+                  <O Extends="IBeamType2" T="Group" X="EndSpanLength+ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:13c28361-7e2b-11e6-8045-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder1:Span2-2" T="Group">
+                  <P N="uid" V="urn:uuid:13c36961-7e2b-11e6-b03e-3c15c2e54ea0"/>
+                  <O Extends="IBeamType3" T="Group" X="EndSpanLength+22*12">
+                     <P N="uid" V="urn:uuid:13c36ad1-7e2b-11e6-a695-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder1:Span2-3" T="Group">
+                  <P N="uid" V="urn:uuid:13c42e5e-7e2b-11e6-8387-3c15c2e54ea0"/>
+                  <O Extends="IBeamType2" T="Group" X="EndSpanLength+MiddleSpanLength-22*12">
+                     <P N="uid" V="urn:uuid:13c42fa6-7e2b-11e6-8659-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder1:Expansion2-1" T="Group">
+                  <P N="uid" V="urn:uuid:13c51ad9-7e2b-11e6-864b-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType2" RZ="PI" T="Group" X="EndSpanLength+MiddleSpanLength+7">
+                     <P N="uid" V="urn:uuid:13c51c0f-7e2b-11e6-8b09-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder1:Expansion2-2" T="Group">
+                  <P N="uid" V="urn:uuid:13c6097a-7e2b-11e6-b7ce-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType1" RZ="PI" T="Group" X="EndSpanLength+MiddleSpanLength+ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:13c60aa8-7e2b-11e6-b63e-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder1:Hanger2" T="Group">
+                  <P N="uid" V="urn:uuid:13c6ec47-7e2b-11e6-930b-3c15c2e54ea0"/>
+                  <O Extends="HangerSetType" T="Group" X="EndSpanLength+MiddleSpanLength">
+                     <P N="uid" V="urn:uuid:13c6ed87-7e2b-11e6-929b-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder1:Span3" T="Group">
+                  <P N="uid" V="urn:uuid:13c7c9a6-7e2b-11e6-8484-3c15c2e54ea0"/>
+                  <O Extends="IBeamType1" T="Group" X="EndSpanLength+MiddleSpanLength+ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:13c7caf0-7e2b-11e6-9d77-3c15c2e54ea0"/>
+                  </O>
+               </O>
+            </O>
+            <O N="Girder2" T="Group" X="64*1" Y="-99*1">
+               <P N="uid" V="urn:uuid:13c94338-7e2b-11e6-8f3d-3c15c2e54ea0"/>
+               <O N="Girder2:Span1" T="Group">
+                  <P N="uid" V="urn:uuid:13c94497-7e2b-11e6-a4b4-3c15c2e54ea0"/>
+                  <O Extends="IBeamType1" T="Group">
+                     <P N="uid" V="urn:uuid:13c9455e-7e2b-11e6-8728-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder2:Expansion1-1" T="Group">
+                  <P N="uid" V="urn:uuid:13ca437a-7e2b-11e6-99c4-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType1" T="Group" X="EndSpanLength-ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:13ca44c5-7e2b-11e6-ae7c-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder2:Expansion1-2" T="Group">
+                  <P N="uid" V="urn:uuid:13cb2519-7e2b-11e6-bea1-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType2" T="Group" X="EndSpanLength-7">
+                     <P N="uid" V="urn:uuid:13cb264f-7e2b-11e6-b8e4-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder2:Hanger1" T="Group">
+                  <P N="uid" V="urn:uuid:13cc07bd-7e2b-11e6-90b6-3c15c2e54ea0"/>
+                  <O Extends="HangerSetType" T="Group" X="EndSpanLength">
+                     <P N="uid" V="urn:uuid:13cc0926-7e2b-11e6-b5f5-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder2:Span2-1" T="Group">
+                  <P N="uid" V="urn:uuid:13cce242-7e2b-11e6-927b-3c15c2e54ea0"/>
+                  <O Extends="IBeamType2" T="Group" X="EndSpanLength+ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:13cce378-7e2b-11e6-a5cf-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder2:Span2-2" T="Group">
+                  <P N="uid" V="urn:uuid:13cdd0b3-7e2b-11e6-a210-3c15c2e54ea0"/>
+                  <O Extends="IBeamType3" T="Group" X="EndSpanLength+22*12">
+                     <P N="uid" V="urn:uuid:13cdd1e8-7e2b-11e6-ac71-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder2:Span2-3" T="Group">
+                  <P N="uid" V="urn:uuid:13cec13d-7e2b-11e6-bc2e-3c15c2e54ea0"/>
+                  <O Extends="IBeamType2" T="Group" X="EndSpanLength+MiddleSpanLength-22*12">
+                     <P N="uid" V="urn:uuid:13cec268-7e2b-11e6-81bf-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder2:Expansion2-1" T="Group">
+                  <P N="uid" V="urn:uuid:13cfa76e-7e2b-11e6-9ac0-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType2" RZ="PI" T="Group" X="EndSpanLength+MiddleSpanLength+7">
+                     <P N="uid" V="urn:uuid:13cfa8ba-7e2b-11e6-a854-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder2:Expansion2-2" T="Group">
+                  <P N="uid" V="urn:uuid:13d08e40-7e2b-11e6-932e-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType1" RZ="PI" T="Group" X="EndSpanLength+MiddleSpanLength+ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:13d08f75-7e2b-11e6-99a6-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder2:Hanger2" T="Group">
+                  <P N="uid" V="urn:uuid:13d1800c-7e2b-11e6-8d28-3c15c2e54ea0"/>
+                  <O Extends="HangerSetType" T="Group" X="EndSpanLength+MiddleSpanLength">
+                     <P N="uid" V="urn:uuid:13d1814c-7e2b-11e6-92cd-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder2:Span3" T="Group">
+                  <P N="uid" V="urn:uuid:13d267f8-7e2b-11e6-bcf2-3c15c2e54ea0"/>
+                  <O Extends="IBeamType1" T="Group" X="EndSpanLength+MiddleSpanLength+ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:13d2692e-7e2b-11e6-a8eb-3c15c2e54ea0"/>
+                  </O>
+               </O>
+            </O>
+            <O N="Girder3" T="Group" X="64*2" Y="-99*2">
+               <P N="uid" V="urn:uuid:13d3d7c7-7e2b-11e6-a8c8-3c15c2e54ea0"/>
+               <O N="Girder3:Span1" T="Group">
+                  <P N="uid" V="urn:uuid:13d3d926-7e2b-11e6-adc1-3c15c2e54ea0"/>
+                  <O Extends="IBeamType1" T="Group">
+                     <P N="uid" V="urn:uuid:13d3da17-7e2b-11e6-9de4-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder3:Expansion1-1" T="Group">
+                  <P N="uid" V="urn:uuid:13d4bd94-7e2b-11e6-9bd8-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType1" T="Group" X="EndSpanLength-ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:13d4bee1-7e2b-11e6-80ee-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder3:Expansion1-2" T="Group">
+                  <P N="uid" V="urn:uuid:13d5c39e-7e2b-11e6-8d99-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType2" T="Group" X="EndSpanLength-7">
+                     <P N="uid" V="urn:uuid:13d5c4de-7e2b-11e6-9e1d-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder3:Hanger1" T="Group">
+                  <P N="uid" V="urn:uuid:13d6ac26-7e2b-11e6-9432-3c15c2e54ea0"/>
+                  <O Extends="HangerSetType" T="Group" X="EndSpanLength">
+                     <P N="uid" V="urn:uuid:13d6ad68-7e2b-11e6-b6c6-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder3:Span2-1" T="Group">
+                  <P N="uid" V="urn:uuid:13d7b10c-7e2b-11e6-ae07-3c15c2e54ea0"/>
+                  <O Extends="IBeamType2" T="Group" X="EndSpanLength+ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:13d7b280-7e2b-11e6-8d09-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder3:Span2-2" T="Group">
+                  <P N="uid" V="urn:uuid:13d8b46e-7e2b-11e6-898a-3c15c2e54ea0"/>
+                  <O Extends="IBeamType3" T="Group" X="EndSpanLength+22*12">
+                     <P N="uid" V="urn:uuid:13d8b5eb-7e2b-11e6-9e13-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder3:Span2-3" T="Group">
+                  <P N="uid" V="urn:uuid:13d9a721-7e2b-11e6-a413-3c15c2e54ea0"/>
+                  <O Extends="IBeamType2" T="Group" X="EndSpanLength+MiddleSpanLength-22*12">
+                     <P N="uid" V="urn:uuid:13d9a873-7e2b-11e6-bafa-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder3:Expansion2-1" T="Group">
+                  <P N="uid" V="urn:uuid:13daa40f-7e2b-11e6-ae71-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType2" RZ="PI" T="Group" X="EndSpanLength+MiddleSpanLength+7">
+                     <P N="uid" V="urn:uuid:13daa575-7e2b-11e6-a90b-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder3:Expansion2-2" T="Group">
+                  <P N="uid" V="urn:uuid:13dbd338-7e2b-11e6-a97a-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType1" RZ="PI" T="Group" X="EndSpanLength+MiddleSpanLength+ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:13dbd4a8-7e2b-11e6-b571-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder3:Hanger2" T="Group">
+                  <P N="uid" V="urn:uuid:13dcc7ca-7e2b-11e6-983d-3c15c2e54ea0"/>
+                  <O Extends="HangerSetType" T="Group" X="EndSpanLength+MiddleSpanLength">
+                     <P N="uid" V="urn:uuid:13dcc90a-7e2b-11e6-b28c-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder3:Span3" T="Group">
+                  <P N="uid" V="urn:uuid:13ddbc21-7e2b-11e6-9116-3c15c2e54ea0"/>
+                  <O Extends="IBeamType1" T="Group" X="EndSpanLength+MiddleSpanLength+ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:13ddbd87-7e2b-11e6-a140-3c15c2e54ea0"/>
+                  </O>
+               </O>
+            </O>
+            <O N="Girder4" T="Group" X="64*3" Y="-99*3">
+               <P N="uid" V="urn:uuid:13df36e1-7e2b-11e6-971c-3c15c2e54ea0"/>
+               <O N="Girder4:Span1" T="Group">
+                  <P N="uid" V="urn:uuid:13df3885-7e2b-11e6-aee3-3c15c2e54ea0"/>
+                  <O Extends="IBeamType1" T="Group">
+                     <P N="uid" V="urn:uuid:13df3940-7e2b-11e6-8cc6-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder4:Expansion1-1" T="Group">
+                  <P N="uid" V="urn:uuid:13e033b0-7e2b-11e6-8e80-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType1" T="Group" X="EndSpanLength-ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:13e03521-7e2b-11e6-9978-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder4:Expansion1-2" T="Group">
+                  <P N="uid" V="urn:uuid:13e14733-7e2b-11e6-96bb-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType2" T="Group" X="EndSpanLength-7">
+                     <P N="uid" V="urn:uuid:13e148cc-7e2b-11e6-a567-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder4:Hanger1" T="Group">
+                  <P N="uid" V="urn:uuid:13e2524c-7e2b-11e6-ae9f-3c15c2e54ea0"/>
+                  <O Extends="HangerSetType" T="Group" X="EndSpanLength">
+                     <P N="uid" V="urn:uuid:13e253d4-7e2b-11e6-b5ed-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder4:Span2-1" T="Group">
+                  <P N="uid" V="urn:uuid:13e35a40-7e2b-11e6-89ce-3c15c2e54ea0"/>
+                  <O Extends="IBeamType2" T="Group" X="EndSpanLength+ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:13e35bb0-7e2b-11e6-b3ec-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder4:Span2-2" T="Group">
+                  <P N="uid" V="urn:uuid:13e458dc-7e2b-11e6-851b-3c15c2e54ea0"/>
+                  <O Extends="IBeamType3" T="Group" X="EndSpanLength+22*12">
+                     <P N="uid" V="urn:uuid:13e45a45-7e2b-11e6-be62-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder4:Span2-3" T="Group">
+                  <P N="uid" V="urn:uuid:13e54b02-7e2b-11e6-a6d8-3c15c2e54ea0"/>
+                  <O Extends="IBeamType2" T="Group" X="EndSpanLength+MiddleSpanLength-22*12">
+                     <P N="uid" V="urn:uuid:13e54c57-7e2b-11e6-934e-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder4:Expansion2-1" T="Group">
+                  <P N="uid" V="urn:uuid:13e68f3a-7e2b-11e6-9df4-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType2" RZ="PI" T="Group" X="EndSpanLength+MiddleSpanLength+7">
+                     <P N="uid" V="urn:uuid:13e690d4-7e2b-11e6-ab0d-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder4:Expansion2-2" T="Group">
+                  <P N="uid" V="urn:uuid:13e77594-7e2b-11e6-b946-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType1" RZ="PI" T="Group" X="EndSpanLength+MiddleSpanLength+ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:13e776de-7e2b-11e6-951e-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder4:Hanger2" T="Group">
+                  <P N="uid" V="urn:uuid:13e8617a-7e2b-11e6-a199-3c15c2e54ea0"/>
+                  <O Extends="HangerSetType" T="Group" X="EndSpanLength+MiddleSpanLength">
+                     <P N="uid" V="urn:uuid:13e862a6-7e2b-11e6-8c12-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder4:Span3" T="Group">
+                  <P N="uid" V="urn:uuid:13e950b3-7e2b-11e6-8543-3c15c2e54ea0"/>
+                  <O Extends="IBeamType1" T="Group" X="EndSpanLength+MiddleSpanLength+ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:13e951de-7e2b-11e6-b02f-3c15c2e54ea0"/>
+                  </O>
+               </O>
+            </O>
+            <O N="Girder5" T="Group" X="64*4" Y="-99*4">
+               <P N="uid" V="urn:uuid:13eaa24f-7e2b-11e6-892c-3c15c2e54ea0"/>
+               <O N="Girder5:Span1" T="Group">
+                  <P N="uid" V="urn:uuid:13eaa3ae-7e2b-11e6-aca1-3c15c2e54ea0"/>
+                  <O Extends="IBeamType1" T="Group">
+                     <P N="uid" V="urn:uuid:13eaa46b-7e2b-11e6-944e-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder5:Expansion1-1" T="Group">
+                  <P N="uid" V="urn:uuid:13eb9638-7e2b-11e6-ba49-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType1" T="Group" X="EndSpanLength-ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:13eb9782-7e2b-11e6-a7ae-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder5:Expansion1-2" T="Group">
+                  <P N="uid" V="urn:uuid:13ec8802-7e2b-11e6-886b-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType2" T="Group" X="EndSpanLength-7">
+                     <P N="uid" V="urn:uuid:13ec8930-7e2b-11e6-b93e-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder5:Hanger1" T="Group">
+                  <P N="uid" V="urn:uuid:13ed83ee-7e2b-11e6-8eb5-3c15c2e54ea0"/>
+                  <O Extends="HangerSetType" T="Group" X="EndSpanLength">
+                     <P N="uid" V="urn:uuid:13ed85b0-7e2b-11e6-9a39-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder5:Span2-1" T="Group">
+                  <P N="uid" V="urn:uuid:13ee668a-7e2b-11e6-86ec-3c15c2e54ea0"/>
+                  <O Extends="IBeamType2" T="Group" X="EndSpanLength+ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:13ee67d1-7e2b-11e6-a4d6-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder5:Span2-2" T="Group">
+                  <P N="uid" V="urn:uuid:13ef3c47-7e2b-11e6-bbfc-3c15c2e54ea0"/>
+                  <O Extends="IBeamType3" T="Group" X="EndSpanLength+22*12">
+                     <P N="uid" V="urn:uuid:13ef3d7d-7e2b-11e6-ae0e-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder5:Span2-3" T="Group">
+                  <P N="uid" V="urn:uuid:13f03761-7e2b-11e6-a157-3c15c2e54ea0"/>
+                  <O Extends="IBeamType2" T="Group" X="EndSpanLength+MiddleSpanLength-22*12">
+                     <P N="uid" V="urn:uuid:13f038a8-7e2b-11e6-a6fe-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder5:Expansion2-1" T="Group">
+                  <P N="uid" V="urn:uuid:13f12f6e-7e2b-11e6-933a-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType2" RZ="PI" T="Group" X="EndSpanLength+MiddleSpanLength+7">
+                     <P N="uid" V="urn:uuid:13f130ab-7e2b-11e6-942e-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder5:Expansion2-2" T="Group">
+                  <P N="uid" V="urn:uuid:13f20a51-7e2b-11e6-b450-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType1" RZ="PI" T="Group" X="EndSpanLength+MiddleSpanLength+ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:13f20ba8-7e2b-11e6-a9bf-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder5:Hanger2" T="Group">
+                  <P N="uid" V="urn:uuid:13f2f505-7e2b-11e6-a3ae-3c15c2e54ea0"/>
+                  <O Extends="HangerSetType" T="Group" X="EndSpanLength+MiddleSpanLength">
+                     <P N="uid" V="urn:uuid:13f2f66b-7e2b-11e6-b9d3-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder5:Span3" T="Group">
+                  <P N="uid" V="urn:uuid:13f3d707-7e2b-11e6-9063-3c15c2e54ea0"/>
+                  <O Extends="IBeamType1" T="Group" X="EndSpanLength+MiddleSpanLength+ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:13f3e41e-7e2b-11e6-a925-3c15c2e54ea0"/>
+                  </O>
+               </O>
+            </O>
+            <O N="Girder6" T="Group" X="64*5" Y="-99*5">
+               <P N="uid" V="urn:uuid:13f52fa3-7e2b-11e6-9083-3c15c2e54ea0"/>
+               <O N="Girder6:Span1" T="Group">
+                  <P N="uid" V="urn:uuid:13f5310a-7e2b-11e6-b8ee-3c15c2e54ea0"/>
+                  <O Extends="IBeamType1" T="Group">
+                     <P N="uid" V="urn:uuid:13f531d4-7e2b-11e6-a3ba-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder6:Expansion1-1" T="Group">
+                  <P N="uid" V="urn:uuid:13f62c7d-7e2b-11e6-91c8-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType1" T="Group" X="EndSpanLength-ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:13f62dbd-7e2b-11e6-96d3-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder6:Expansion1-2" T="Group">
+                  <P N="uid" V="urn:uuid:13f72854-7e2b-11e6-9114-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType2" T="Group" X="EndSpanLength-7">
+                     <P N="uid" V="urn:uuid:13f729bd-7e2b-11e6-a163-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder6:Hanger1" T="Group">
+                  <P N="uid" V="urn:uuid:13f80af8-7e2b-11e6-a469-3c15c2e54ea0"/>
+                  <O Extends="HangerSetType" T="Group" X="EndSpanLength">
+                     <P N="uid" V="urn:uuid:13f80c19-7e2b-11e6-8f1d-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder6:Span2-1" T="Group">
+                  <P N="uid" V="urn:uuid:13f8f257-7e2b-11e6-b84e-3c15c2e54ea0"/>
+                  <O Extends="IBeamType2" T="Group" X="EndSpanLength+ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:13f8f3b5-7e2b-11e6-be25-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder6:Span2-2" T="Group">
+                  <P N="uid" V="urn:uuid:13f9e39e-7e2b-11e6-976b-3c15c2e54ea0"/>
+                  <O Extends="IBeamType3" T="Group" X="EndSpanLength+22*12">
+                     <P N="uid" V="urn:uuid:13f9e4e8-7e2b-11e6-83fd-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder6:Span2-3" T="Group">
+                  <P N="uid" V="urn:uuid:13facc33-7e2b-11e6-ad50-3c15c2e54ea0"/>
+                  <O Extends="IBeamType2" T="Group" X="EndSpanLength+MiddleSpanLength-22*12">
+                     <P N="uid" V="urn:uuid:13facd73-7e2b-11e6-a0d3-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder6:Expansion2-1" T="Group">
+                  <P N="uid" V="urn:uuid:13fbc54c-7e2b-11e6-85a1-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType2" RZ="PI" T="Group" X="EndSpanLength+MiddleSpanLength+7">
+                     <P N="uid" V="urn:uuid:13fbc685-7e2b-11e6-90eb-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder6:Expansion2-2" T="Group">
+                  <P N="uid" V="urn:uuid:13fcbef3-7e2b-11e6-ae57-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType1" RZ="PI" T="Group" X="EndSpanLength+MiddleSpanLength+ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:13fcc051-7e2b-11e6-b715-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder6:Hanger2" T="Group">
+                  <P N="uid" V="urn:uuid:13fda2a3-7e2b-11e6-a39d-3c15c2e54ea0"/>
+                  <O Extends="HangerSetType" T="Group" X="EndSpanLength+MiddleSpanLength">
+                     <P N="uid" V="urn:uuid:13fda3f0-7e2b-11e6-ad96-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder6:Span3" T="Group">
+                  <P N="uid" V="urn:uuid:13fe7eeb-7e2b-11e6-aa3b-3c15c2e54ea0"/>
+                  <O Extends="IBeamType1" T="Group" X="EndSpanLength+MiddleSpanLength+ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:13fe802b-7e2b-11e6-a3f2-3c15c2e54ea0"/>
+                  </O>
+               </O>
+            </O>
+            <O N="Girder7" T="Group" X="64*6" Y="-99*6">
+               <P N="uid" V="urn:uuid:13ffdb02-7e2b-11e6-a5cf-3c15c2e54ea0"/>
+               <O N="Girder7:Span1" T="Group">
+                  <P N="uid" V="urn:uuid:13ffdc6b-7e2b-11e6-99b9-3c15c2e54ea0"/>
+                  <O Extends="IBeamType1" T="Group">
+                     <P N="uid" V="urn:uuid:13ffdd30-7e2b-11e6-a458-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder7:Expansion1-1" T="Group">
+                  <P N="uid" V="urn:uuid:1400c238-7e2b-11e6-9cf2-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType1" T="Group" X="EndSpanLength-ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:1400c363-7e2b-11e6-8904-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder7:Expansion1-2" T="Group">
+                  <P N="uid" V="urn:uuid:1401ca99-7e2b-11e6-99cb-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType2" T="Group" X="EndSpanLength-7">
+                     <P N="uid" V="urn:uuid:1401cc0a-7e2b-11e6-9d00-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder7:Hanger1" T="Group">
+                  <P N="uid" V="urn:uuid:1402c721-7e2b-11e6-be91-3c15c2e54ea0"/>
+                  <O Extends="HangerSetType" T="Group" X="EndSpanLength">
+                     <P N="uid" V="urn:uuid:1402c894-7e2b-11e6-9190-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder7:Span2-1" T="Group">
+                  <P N="uid" V="urn:uuid:1403a4ba-7e2b-11e6-8611-3c15c2e54ea0"/>
+                  <O Extends="IBeamType2" T="Group" X="EndSpanLength+ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:1403a607-7e2b-11e6-aefb-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder7:Span2-2" T="Group">
+                  <P N="uid" V="urn:uuid:14048421-7e2b-11e6-860b-3c15c2e54ea0"/>
+                  <O Extends="IBeamType3" T="Group" X="EndSpanLength+22*12">
+                     <P N="uid" V="urn:uuid:1404854c-7e2b-11e6-bc66-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder7:Span2-3" T="Group">
+                  <P N="uid" V="urn:uuid:14056ea8-7e2b-11e6-b451-3c15c2e54ea0"/>
+                  <O Extends="IBeamType2" T="Group" X="EndSpanLength+MiddleSpanLength-22*12">
+                     <P N="uid" V="urn:uuid:14056fe8-7e2b-11e6-9cd1-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder7:Expansion2-1" T="Group">
+                  <P N="uid" V="urn:uuid:140665f8-7e2b-11e6-84d7-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType2" RZ="PI" T="Group" X="EndSpanLength+MiddleSpanLength+7">
+                     <P N="uid" V="urn:uuid:14066742-7e2b-11e6-afa7-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder7:Expansion2-2" T="Group">
+                  <P N="uid" V="urn:uuid:1407558a-7e2b-11e6-acf9-3c15c2e54ea0"/>
+                  <O Extends="ExpansionType1" RZ="PI" T="Group" X="EndSpanLength+MiddleSpanLength+ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:140756ca-7e2b-11e6-af57-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder7:Hanger2" T="Group">
+                  <P N="uid" V="urn:uuid:14085066-7e2b-11e6-9f77-3c15c2e54ea0"/>
+                  <O Extends="HangerSetType" T="Group" X="EndSpanLength+MiddleSpanLength">
+                     <P N="uid" V="urn:uuid:140851e1-7e2b-11e6-83b6-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Girder7:Span3" T="Group">
+                  <P N="uid" V="urn:uuid:1409361e-7e2b-11e6-865f-3c15c2e54ea0"/>
+                  <O Extends="IBeamType1" T="Group" X="EndSpanLength+MiddleSpanLength+ExpansionLength/2">
+                     <P N="uid" V="urn:uuid:14093791-7e2b-11e6-8066-3c15c2e54ea0"/>
+                  </O>
+               </O>
+            </O>
+         </O>
+         <O N="Bracing" T="Group">
+            <P N="uid" V="urn:uuid:140b1651-7e2b-11e6-834a-3c15c2e54ea0"/>
+            <O N="Bracing1" T="Group">
+               <P N="uid" V="urn:uuid:140b17d7-7e2b-11e6-ad17-3c15c2e54ea0"/>
+               <O N="Bracing1:1" T="Group">
+                  <P N="uid" V="urn:uuid:140b18d1-7e2b-11e6-8b4b-3c15c2e54ea0"/>
+                  <O Extends="BracingType1" N="Bracing1:1_1" T="Group" X="275" Y="-99*5-99/2">
+                     <P N="uid" V="urn:uuid:140b19a3-7e2b-11e6-b24f-3c15c2e54ea0"/>
+                  </O>
+                  <O Extends="BracingType1" N="Bracing1:1_2" T="Group" X="275+64*1" Y="-99*4-99/2">
+                     <P N="uid" V="urn:uuid:140ba068-7e2b-11e6-afb5-3c15c2e54ea0"/>
+                  </O>
+                  <O Extends="BracingType1" N="Bracing1:1_3" T="Group" X="275+64*2" Y="-99*3-99/2">
+                     <P N="uid" V="urn:uuid:140c0ec2-7e2b-11e6-a4e3-3c15c2e54ea0"/>
+                  </O>
+                  <O Extends="BracingType1" N="Bracing1:1_4" T="Group" X="275+64*3" Y="-99*2-99/2">
+                     <P N="uid" V="urn:uuid:140c7997-7e2b-11e6-a19d-3c15c2e54ea0"/>
+                  </O>
+                  <O Extends="BracingType1" N="Bracing1:1_5" T="Group" X="275+64*4" Y="-99*1-99/2">
+                     <P N="uid" V="urn:uuid:140cf1d4-7e2b-11e6-8655-3c15c2e54ea0"/>
+                  </O>
+                  <O Extends="BracingType1" N="Bracing1:1_6" T="Group" X="275+64*5" Y="-99*0-99/2">
+                     <P N="uid" V="urn:uuid:140d6d3a-7e2b-11e6-b9aa-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O N="Bracing1:2" T="Group">
+                  <P N="uid" V="urn:uuid:140e60b3-7e2b-11e6-a49a-3c15c2e54ea0"/>
+                  <O Extends="BracingType1" N="Bracing1:2_1" T="Group" X="EndSpanLength+MiddleSpanLength/5" Y="-99*5-99/2">
+                     <P N="uid" V="urn:uuid:140e61fd-7e2b-11e6-a7cb-3c15c2e54ea0"/>
+                  </O>
+                  <O Extends="BracingType1" N="Bracing1:2_2" T="Group" X="EndSpanLength+MiddleSpanLength/5+64*1" Y="-99*4-99/2">
+                     <P N="uid" V="urn:uuid:140edcb0-7e2b-11e6-966d-3c15c2e54ea0"/>
+                  </O>
+                  <O Extends="BracingType1" N="Bracing1:2_3" T="Group" X="EndSpanLength+MiddleSpanLength/5+64*2" Y="-99*3-99/2">
+                     <P N="uid" V="urn:uuid:140f587a-7e2b-11e6-86ca-3c15c2e54ea0"/>
+                  </O>
+                  <O Extends="BracingType1" N="Bracing1:2_4" T="Group" X="EndSpanLength+MiddleSpanLength/5+64*4" Y="-99*2-99/2">
+                     <P N="uid" V="urn:uuid:140fcab3-7e2b-11e6-a2e4-3c15c2e54ea0"/>
+                  </O>
+                  <O Extends="BracingType1" N="Bracing1:2_5" T="Group" X="EndSpanLength+MiddleSpanLength/5+64*5" Y="-99*1-99/2">
+                     <P N="uid" V="urn:uuid:14103b82-7e2b-11e6-a7fd-3c15c2e54ea0"/>
+                  </O>
+                  <O Extends="BracingType1" N="Bracing1:2_6" T="Group" X="EndSpanLength+MiddleSpanLength/5+64*6" Y="-99*0-99/2">
+                     <P N="uid" V="urn:uuid:1410a77a-7e2b-11e6-9331-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O Extends="Bracing1:2" N="Bracing1:3" T="Group" X="MiddleSpanLength/5">
+                  <P N="uid" V="urn:uuid:14119728-7e2b-11e6-84cb-3c15c2e54ea0"/>
+               </O>
+               <O Extends="Bracing1:2" N="Bracing1:4" T="Group" X="MiddleSpanLength/5*2">
+                  <P N="uid" V="urn:uuid:14120c78-7e2b-11e6-8dec-3c15c2e54ea0"/>
+               </O>
+               <O Extends="Bracing1:2" N="Bracing1:5" T="Group" X="MiddleSpanLength/5*3">
+                  <P N="uid" V="urn:uuid:14128157-7e2b-11e6-b490-3c15c2e54ea0"/>
+               </O>
+               <O Extends="Bracing1:1" N="Bracing1:6" T="Group" X="EndSpanLength*2+MiddleSpanLength-275*2+64">
+                  <P N="uid" V="urn:uuid:1412f461-7e2b-11e6-ac6b-3c15c2e54ea0"/>
+               </O>
+            </O>
+            <O N="Bracing2" T="Group">
+               <P N="uid" V="urn:uuid:1413daee-7e2b-11e6-91cf-3c15c2e54ea0"/>
+               <O N="Bracing2:1" T="Group">
+                  <P N="uid" V="urn:uuid:1413dc42-7e2b-11e6-93e5-3c15c2e54ea0"/>
+                  <O Extends="BracingType2" N="Bracing2:1_1" T="Line" X="EndSpanLength+16+64" Y="-99*5-99/2">
+                     <P N="l" V="MiddleSpanLength/10-16-64"/>
+                     <P N="d" V="-1"/>
+                  </O>
+                  <O Extends="BracingType2" N="Bracing2:1_2" T="Line" X="EndSpanLength+MiddleSpanLength/10*1" Y="-99*5-99/2"/>
+                  <O Extends="BracingType2" N="Bracing2:1_3" T="Line" X="EndSpanLength+MiddleSpanLength/10*2" Y="-99*5-99/2">
+                     <P N="d" V="-1"/>
+                  </O>
+                  <O Extends="BracingType2" N="Bracing2:1_4" T="Line" X="EndSpanLength+MiddleSpanLength/10*3" Y="-99*5-99/2"/>
+                  <O Extends="BracingType2" N="Bracing2:1_5" T="Line" X="EndSpanLength+MiddleSpanLength/10*4" Y="-99*5-99/2">
+                     <P N="d" V="-1"/>
+                  </O>
+                  <O Extends="BracingType2" N="Bracing2:1_6" T="Line" X="EndSpanLength+MiddleSpanLength/10*5" Y="-99*5-99/2"/>
+                  <O Extends="BracingType2" N="Bracing2:1_7" T="Line" X="EndSpanLength+MiddleSpanLength/10*6" Y="-99*5-99/2">
+                     <P N="d" V="-1"/>
+                  </O>
+                  <O Extends="BracingType2" N="Bracing2:1_8" T="Line" X="EndSpanLength+MiddleSpanLength/10*7" Y="-99*5-99/2"/>
+                  <O Extends="BracingType2" N="Bracing2:1_9" T="Line" X="EndSpanLength+MiddleSpanLength/10*8" Y="-99*5-99/2">
+                     <P N="d" V="-1"/>
+                  </O>
+                  <O Extends="BracingType2" N="Bracing2:1_10" T="Line" X="EndSpanLength+MiddleSpanLength/10*9" Y="-99*5-99/2">
+                     <P N="l" V="MiddleSpanLength/10+64-16"/>
+                  </O>
+               </O>
+               <O AX="EndSpanLength+MiddleSpanLength/2+64*3" AY="-99*3" Extends="Bracing2:1" N="Bracing2:2" RZ="PI" T="Group">
+                  <P N="uid" V="urn:uuid:1418f38a-7e2b-11e6-8dfc-3c15c2e54ea0"/>
+               </O>
+            </O>
+            <O N="Bracing3" T="Group">
+               <P N="uid" V="urn:uuid:1419ee7a-7e2b-11e6-b06c-3c15c2e54ea0"/>
+               <O N="Bracing3:1" T="Group">
+                  <P N="uid" V="urn:uuid:1419efe3-7e2b-11e6-8a70-3c15c2e54ea0"/>
+                  <O Extends="BracingType3" N="Bracing3:1_1" T="Group" X="EndSpanLength-16+64/2-2.3" Y="-99/2-99*5">
+                     <P N="uid" V="urn:uuid:1419f0c7-7e2b-11e6-a1a5-3c15c2e54ea0"/>
+                  </O>
+                  <O Extends="BracingType3" N="Bracing3:1_2" T="Group" X="EndSpanLength-16+64/2-2.3+64*1" Y="-99/2-99*4">
+                     <P N="uid" V="urn:uuid:141a5ffd-7e2b-11e6-8564-3c15c2e54ea0"/>
+                  </O>
+                  <O Extends="BracingType3" N="Bracing3:1_3" T="Group" X="EndSpanLength-16+64/2-2.3+64*2" Y="-99/2-99*3">
+                     <P N="uid" V="urn:uuid:141ad9b5-7e2b-11e6-9484-3c15c2e54ea0"/>
+                  </O>
+                  <O Extends="BracingType3" N="Bracing3:1_4" T="Group" X="EndSpanLength-16+64/2-2.3+64*3" Y="-99/2-99*2">
+                     <P N="uid" V="urn:uuid:141b5b7a-7e2b-11e6-b413-3c15c2e54ea0"/>
+                  </O>
+                  <O Extends="BracingType3" N="Bracing3:1_5" T="Group" X="EndSpanLength-16+64/2-2.3+64*4" Y="-99/2-99*1">
+                     <P N="uid" V="urn:uuid:141bd370-7e2b-11e6-9d77-3c15c2e54ea0"/>
+                  </O>
+                  <O Extends="BracingType3" N="Bracing3:1_6" T="Group" X="EndSpanLength-16+64/2-2.3+64*5" Y="-99/2-99*0">
+                     <P N="uid" V="urn:uuid:141c5111-7e2b-11e6-a3f5-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O Extends="Bracing3:1" N="Bracing3:2" T="Group" X="ExpansionLength">
+                  <P N="uid" V="urn:uuid:141d37d9-7e2b-11e6-8766-3c15c2e54ea0"/>
+               </O>
+               <O Extends="Bracing3:1" N="Bracing3:3" T="Group" X="MiddleSpanLength">
+                  <P N="uid" V="urn:uuid:141daf42-7e2b-11e6-8317-3c15c2e54ea0"/>
+               </O>
+               <O Extends="Bracing3:1" N="Bracing3:4" T="Group" X="MiddleSpanLength+ExpansionLength">
+                  <P N="uid" V="urn:uuid:141e1a35-7e2b-11e6-b6ff-3c15c2e54ea0"/>
+               </O>
+            </O>
+            <O N="Bracing4" T="Group">
+               <P N="uid" V="urn:uuid:141ef01e-7e2b-11e6-9962-3c15c2e54ea0"/>
+               <O N="Bracing4:1" T="Group">
+                  <P N="uid" V="urn:uuid:141ef170-7e2b-11e6-9e98-3c15c2e54ea0"/>
+                  <O Extends="BracingType4" N="Bracing4:1_1" T="Group" X="Pier1Location+64/2" Y="-99/2-99*5">
+                     <P N="uid" V="urn:uuid:141ef242-7e2b-11e6-ab05-3c15c2e54ea0"/>
+                  </O>
+                  <O Extends="BracingType4" N="Bracing4:1_2" T="Group" X="Pier1Location+64/2+64*1" Y="-99/2-99*4">
+                     <P N="uid" V="urn:uuid:141f5cca-7e2b-11e6-8c73-3c15c2e54ea0"/>
+                  </O>
+                  <O Extends="BracingType4" N="Bracing4:1_3" T="Group" X="Pier1Location+64/2+64*2" Y="-99/2-99*3">
+                     <P N="uid" V="urn:uuid:141fd1fa-7e2b-11e6-be88-3c15c2e54ea0"/>
+                  </O>
+                  <O Extends="BracingType4" N="Bracing4:1_4" T="Group" X="Pier1Location+64/2+64*3" Y="-99/2-99*2">
+                     <P N="uid" V="urn:uuid:14204717-7e2b-11e6-9a25-3c15c2e54ea0"/>
+                  </O>
+                  <O Extends="BracingType4" N="Bracing4:1_5" T="Group" X="Pier1Location+64/2+64*4" Y="-99/2-99*1">
+                     <P N="uid" V="urn:uuid:1420ca73-7e2b-11e6-adb8-3c15c2e54ea0"/>
+                  </O>
+                  <O Extends="BracingType4" N="Bracing4:1_6" T="Group" X="Pier1Location+64/2+64*5" Y="-99/2-99*0">
+                     <P N="uid" V="urn:uuid:14214c6b-7e2b-11e6-babe-3c15c2e54ea0"/>
+                  </O>
+               </O>
+               <O Extends="Bracing4:1" N="Bracing4:2" T="Group" X="Pier2Location-Pier1Location">
+                  <P N="uid" V="urn:uuid:14224f33-7e2b-11e6-94f5-3c15c2e54ea0"/>
+               </O>
+            </O>
+         </O>
+      </O>
+      <O N="SubStructure" T="Group">
+         <P N="uid" V="urn:uuid:1424480c-7e2b-11e6-853e-3c15c2e54ea0"/>
+         <O N="RCPierCap" T="Group">
+            <P N="uid" V="urn:uuid:14244991-7e2b-11e6-bb78-3c15c2e54ea0"/>
+            <O N="PierCapTemplate" T="Group">
+               <P N="uid" V="urn:uuid:14244c45-7e2b-11e6-a9c4-3c15c2e54ea0"/>
+               <P N="ObjTypeDef" V="1"/>
+               <O N="PierCapType" T="Group">
+                  <P N="uid" V="urn:uuid:14244e4c-7e2b-11e6-b96c-3c15c2e54ea0"/>
+                  <P N="Color" T="Text" V="#dddddd"/>
+                  <O N="UpperPier" T="Line">
+                     <O T="Point" X="0" Y="0" Z="0"/>
+                     <O T="Point" X="0" Y="0" Z="-42"/>
+                     <O RZ="0.5739" T="Section">
+                        <O T="Point" X="750/2" Y="39/2">
+                           <P N="R" V="39/2"/>
+                        </O>
+                        <O T="Point" X="750/2" Y="-39/2">
+                           <P N="R" V="39/2"/>
+                        </O>
+                        <O T="Point" X="-750/2" Y="-39/2">
+                           <P N="R" V="39/2"/>
+                        </O>
+                        <O T="Point" X="-750/2" Y="39/2">
+                           <P N="R" V="39/2"/>
+                        </O>
+                     </O>
+                  </O>
+               </O>
+            </O>
+            <O Extends="PierCapType" N="PierCap1" T="Group" X="Pier1Location+64*3" Y="-99*3" Z="-27-10">
+               <P N="uid" V="urn:uuid:14290c28-7e2b-11e6-ad3c-3c15c2e54ea0"/>
+            </O>
+            <O Extends="PierCapType" N="PierCap2" T="Group" X="Pier2Location+64*3" Y="-99*3" Z="-27-10">
+               <P N="uid" V="urn:uuid:14299b4a-7e2b-11e6-8e49-3c15c2e54ea0"/>
+            </O>
+         </O>
+         <O N="RCColumn" T="Group">
+            <P N="uid" V="urn:uuid:142a925c-7e2b-11e6-942b-3c15c2e54ea0"/>
+            <O N="ColumnTemplate" T="Group">
+               <P N="uid" V="urn:uuid:142a970a-7e2b-11e6-939e-3c15c2e54ea0"/>
+               <P N="ObjTypeDef" V="1"/>
+               <O N="ColumnType" T="Line">
+                  <P N="Color" T="Text" V="#dddddd"/>
+                  <P N="y" V="118"/>
+                  <O T="Point" X="0" Y="y" Z="-42"/>
+                  <O T="Point" X="0" Y="y" Z="-162"/>
+                  <O T="Section">
+                     <O T="Circle">
+                        <P N="Radius" V="18"/>
+                        <P N="Segments" V="10"/>
+                     </O>
+                  </O>
+               </O>
+            </O>
+            <O N="Column1" RZ="0.5739" T="Group" X="Pier1Location+64*3" Y="-99*3" Z="-27-10">
+               <P N="uid" V="urn:uuid:142d2ecc-7e2b-11e6-a880-3c15c2e54ea0"/>
+               <O Extends="ColumnType" N="Column1:1" T="Line"/>
+               <O Extends="Column1:1" N="Column1:2" T="Line" Y="235"/>
+               <O Extends="Column1:1" N="Column1:3" T="Line" Y="-236"/>
+               <O Extends="Column1:1" N="Column1:4" T="Line" Y="-471"/>
+            </O>
+            <O N="Column2" RZ="0.5739" T="Group" X="Pier2Location+64*3" Y="-99*3" Z="-27-10">
+               <P N="uid" V="urn:uuid:142fa8f0-7e2b-11e6-8748-3c15c2e54ea0"/>
+               <O Extends="ColumnType" N="Column2:1" T="Line"/>
+               <O Extends="Column1:1" N="Column2:2" T="Line" Y="235"/>
+               <O Extends="Column1:1" N="Column2:3" T="Line" Y="-236"/>
+               <O Extends="Column1:1" N="Column2:4" T="Line" Y="-471"/>
+            </O>
+         </O>
+      </O>
+   </O>
+</O>

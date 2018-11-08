@@ -1,0 +1,44 @@
+
+
+<div>
+    <h1>Image retreival</h1>
+
+	<div class = "input">
+        <label class="input-field">Camera name: 
+        <input type="text" ng-model="camera" ></label>
+    </div>
+	<div class = "input">
+        <label class="input-field">Begin timestamp:
+        <input type="text" ng-model="begin" ></label>
+    </div>
+	<div class = "input">
+        <label class="input-field">End timestamp
+        <input type="text" ng-model="end" ></label>
+    </div>
+	<div class = "button">
+        <button ng-click="searchImageData()">Search</label>
+    </div>
+
+    <div ng-if="camera.length !== 0 ">
+	    <div class = "result" ng-if="imageDataList.content[0] !== null && imageDataList.content.length !== 0 && imageDataList.length !== 0 ">
+    		<table cellspacing="0">
+				<thead>
+					<tr>
+						<td>Timestamp</td>
+						<td>Image</td>
+					</tr>
+				</thead>
+				<tbody ng-repeat="image in imageDataList.content">
+					<tr class="odd">
+						<td>{{image.event_time}}</td>
+						<td>
+							<img src={{image.image}} />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class = "noResult" ng-if="imageDataList.content[0] === null || imageDataList.content.length === 0 || imageDataList.length === 0 ">
+		    <p>"No matching results..."</p>
+		</div>
+</div>

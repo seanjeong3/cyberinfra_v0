@@ -1,0 +1,155 @@
+<?xml version="1.0"?>
+<!-- This is a WADL file for the EIG Cloud APIs -->
+
+<application xmlns="http://wadl.dev.java.net/2009/02"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:sd="http://eigcloud.westus2.cloudapp.azure.com/schema/sensordata.xsd"
+	xmlns:brim="http://eigcloud.westus2.cloudapp.azure.com/schema/brim.xsd"
+	>
+
+	 <grammars>
+	 	<include href="http://eigcloud.westus2.cloudapp.azure.com/schema/sensordata.xsd" />
+	 	<include href="http://eigcloud.westus2.cloudapp.azure.com/schema/brim.xsd" />
+	 </grammars>
+
+ 	<!-- The resource -->
+
+	<resources base="http://eigcloud.westus2.cloudapp.azure.com/">
+		<doc  title="EIG cloud API v1">
+			Post or retrieve bridge monitoring data from the backed database system.
+		</doc>
+		<resource path="/">
+			<param name="Authorization" style="header" required="true">
+				<doc >All EIG cloud API calls must be authenticated
+				using Basic HTTP auth.</doc>
+	     	</param>
+	     	<resource path="sensor">
+				<method href="#GETSensor" />
+			</resource>
+			<resource path="daqevent">
+				<method href="#GETDaqEvent" />
+			</resource>
+			<resource path="sensordata">
+				<method href="#GETSensorData" />
+			</resource>
+			<resource path="imagedata">
+				<method href="#GETImageData" />
+			</resource>
+			<resource path="femodel">
+				<method href="#GETFemodel" />
+			</resource>
+			<resource path="geometricmodel">
+				<method href="#GETGeometricModel" />
+			</resource>
+		</resource>
+	</resources>
+
+ 	<!-- The method -->
+
+	<method id="GETSensor" name="GET">
+		<doc  title="Returns a sensor metadata." />
+		<request>
+			<resource path=".">
+				<param name="sensorType" style="query" type="xs:string"/>
+				<param name="install" style="query" type="xs:dateTime"/>
+				<param name="remove" style="query" type="xs:dateTime"/>
+			</resource>
+			<resource path="{id}">
+				<param name="id" required="true" style="template" type="xs:string"/>
+				<param name="property" style="query" type="xs:string"/>
+				<param name="install" style="query" type="xs:dateTime"/>
+				<param name="remove" style="query" type="xs:dateTime"/>
+			</resource>
+		</request>
+		<response Status="200">
+			<representation href="#sensorInformation" />
+			<fault id="BadRequest" status="400" />
+			<fault id="AuthorizationRequired" status="401" />
+		</response>
+	</method>
+
+	<method id="GETDaqEvent" name="GET">
+		<doc  title="Returns a daq event list." />
+		<request>
+			<param name="event_time_begin" style="query" type="xs:dateTime"/>
+			<param name="event_time_end" style="query" type="xs:dateTime"/>
+		</request>
+		<response Status="200">
+			<representation href="#daqEventInformation" />
+			<fault id="BadRequest" status="400" />
+			<fault id="AuthorizationRequired" status="401" />
+		</response>
+	</method>
+
+	<method id="GETSensorData" name="GET">
+		<doc  title="Returns a set of sensor measurement data." />
+		<request>
+			<resource path="{id}">
+				<param name="id" required="true" style="template" type="xs:string"/>
+				<param name="month" required="true" style="query" type="xs:string"/>
+				<param name="install" style="query" type="xs:dateTime"/>
+				<param name="remove" style="query" type="xs:dateTime"/>
+			</resource>
+		</request>
+		<response Status="200">
+			<representation href="#sensorData" />
+			<fault id="BadRequest" status="400" />
+			<fault id="AuthorizationRequired" status="401" />
+		</response>
+	</method>
+
+	<method id="GETImageData" name="GET">
+		<doc  title="Returns a set of image data." />
+		<request>
+			<resource path="{id}">
+				<param name="id" required="true" style="template" type="xs:string"/>
+				<param name="date" required="true" style="query" type="xs:string"/>
+				<param name="install" style="query" type="xs:dateTime"/>
+				<param name="remove" style="query" type="xs:dateTime"/>
+			</resource>
+		</request>
+		<response Status="200">
+			<representation href="#imageData" />
+			<fault id="BadRequest" status="400" />
+			<fault id="AuthorizationRequired" status="401" />
+		</response>
+	</method>
+
+	<method id="GETFemodel" name="GET">
+		<doc  title="Returns the FE model of the bridge" />
+		<request>
+			<param name="format" style="query" >
+				<option value="xml" mediaType="application/xml"/>  
+				<option value="xlsx" mediaType="application/vnd.ms-excel"/>
+			</param>
+		</request>
+		<response Status="200">
+			<representation href="#femodelxml" />
+			<representation href="#femodelxlsx" />
+			<fault id="BadRequest" status="400" />
+			<fault id="AuthorizationRequired" status="401" />
+		</response>
+	</method>
+
+	<method id="GETGeometricModel" name="GET">
+		<doc  title="Returns the geometric model of the bridge" />
+		<request />
+		<response Status="200">
+			<representation href="#geometricmodel" />
+			<fault id="BadRequest" status="400" />
+			<fault id="AuthorizationRequired" status="401" />
+		</response>
+	</method>
+
+ 	<!-- The representation -->
+
+	<representation id="sensorInformation" mediaType="application/json" element="sd:sensorInformation" />
+	<representation id="daqEventInformation" mediaType="application/json" element="sd:daqEventInformation" />
+	<representation id="sensorData" mediaType="application/json" element="sd:sensorData" />
+	<representation id="imageData" mediaType="application/json" element="sd:sensorData" />
+	<representation id="femodelxml" mediaType="application/xml" element="brim:O" />
+	<representation id="femodelxlsx" mediaType="application/vnd.ms-excel" />
+	<representation id="geometricmodel" mediaType="application/xml" element="brim:O" />
+
+</application>
+

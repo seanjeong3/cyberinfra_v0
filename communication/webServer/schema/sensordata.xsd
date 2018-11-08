@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="sensorInformation">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="sensor_id" type="xs:string"/>
+				<xs:element name="N" type="xs:string" minOccurs="0"/>
+				<xs:element name="T" type="xs:string" minOccurs="0"/>
+				<xs:element name="long_name" type="xs:string" minOccurs="0"/>
+				<xs:element name="short_name" type="xs:string" minOccurs="0"/>
+				<xs:element name="model_number" type="xs:string" minOccurs="0"/>
+				<xs:element name="manufacturer" type="xs:string" minOccurs="0"/>
+				<xs:element name="sensor_type" type="xs:string"/>
+				<xs:element name="intended_application" type="xs:string" minOccurs="0"/>
+				<xs:element name="sensor_name" type="xs:string" minOccurs="0"/>
+				<xs:element name="keywords" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element type="xs:string" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="description" type="xs:string" minOccurs="0"/>
+				<xs:element name="input" type="xs:string" minOccurs="0"/>
+				<xs:element name="output" type="xs:string" minOccurs="0"/>
+				<xs:element name="input_uom" type="xs:string" minOccurs="0"/>
+				<xs:element name="output_uom" type="xs:string" minOccurs="0"/>
+				<xs:element name="sampling_rate" type="xs:double" minOccurs="0"/>
+				<xs:element name="gain" type="xs:double" minOccurs="0"/>
+				<xs:element name="conversion_factor" type="xs:double" minOccurs="0"/>
+				<xs:element name="install" type="xs:datetime"/>
+				<xs:element name="remove" type="xs:datetime"/>
+				<xs:element name="position_description" type="xs:string" minOccurs="0"/>
+				<xs:element name="local_coordinate" type="xs:string" minOccurs="0"/>
+				<xs:element name="global_coordinate" type="xs:string" minOccurs="0"/>
+				<xs:element name="data_link" type="xs:string" minOccurs="0"/>
+				<xs:element name="weight" type="xs:double" minOccurs="0"/>
+				<xs:element name="length" type="xs:double" minOccurs="0"/>
+				<xs:element name="width" type="xs:double" minOccurs="0"/>
+				<xs:element name="height" type="xs:double" minOccurs="0"/>
+				<xs:element name="length_uom" type="xs:string" minOccurs="0"/>
+				<xs:element name="voltage" type="xs:string" minOccurs="0"/>
+				<xs:element name="voltage_uom" type="xs:string" minOccurs="0"/>
+				<xs:element name="current_type" type="xs:string" minOccurs="0"/>
+				<xs:element name="amp_range" type="xs:string" minOccurs="0"/>
+				<xs:element name="amp_range_uom" type="xs:string" minOccurs="0"/>
+				<xs:element name="sensing_range" type="xs:string" minOccurs="0"/>
+				<xs:element name="sensitivity" type="xs:string" minOccurs="0"/>
+				<xs:element name="sampling_period" type="xs:string" minOccurs="0"/>
+				<xs:element name="responsible_party" type="xs:string" minOccurs="0"/>
+				<xs:element name="telephone" type="xs:string" minOccurs="0"/>
+				<xs:element name="address" type="xs:string" minOccurs="0"/>
+				<xs:element name="manual" type="xs:string" minOccurs="0"/>
+				<xs:element name="fenode" type="xs:string" minOccurs="0"/>
+				<xs:element name="target_object" type="xs:uuid" minOccurs="0"/>
+				<xs:element name="note" type="xs:string" minOccurs="0"/>
+				<xs:element name="parent" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element type="xs:uuid" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="child" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element type="xs:uuid" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="daqEventInformation">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="daq_id" type="xs:string"/>
+				<xs:element name="event_time" type="xs:datetime"/>
+				<xs:element name="sensor">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element type="xs:string" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="sensorData">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="sensor_id" type="xs:string"/>
+				<xs:element name="event_time" type="xs:datetime"/>
+				<xs:element name="data">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element type="xs:double" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="imageData">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="camera_id" type="xs:string"/>
+				<xs:element name="event_time" type="xs:datetime"/>
+				<xs:element name="image" type="xs:hexBinary"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+</xs:schema>
+
+
