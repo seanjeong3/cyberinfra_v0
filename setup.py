@@ -101,17 +101,16 @@ def install_cassandra(param):
 	# os.system('export CQLSH_NO_BUNDLED=true')
 	# os.system('export PATH="/opt/apache-cassandra-3.7/bin:$PATH"')
 
-	# ### Make session keep alive ###
-	# os.system('sudo sysctl -w net.ipv4.tcp_keepalive_time=60 net.ipv4.tcp_keepalive_probes=3 net.ipv4.tcp_keepalive_intvl=10')
+	### Make session keep alive ###
+	os.system('sudo sysctl -w net.ipv4.tcp_keepalive_time=60 net.ipv4.tcp_keepalive_probes=3 net.ipv4.tcp_keepalive_intvl=10')
 
-	# ### Enable auth ###
-	# os.system('mkdir {0}/.cassandra'.format(home))
-	# os.system('touch {0}/.cassandra/cqlshrc'.format(home))
-	# os.system('echo "[authentication]" >> {0}/.cassandra/cqlshrc'.format(home))
-	# os.system('echo "username = cassandra" >> {0}/.cassandra/cqlshrc'.format(home))
-	# os.system('echo "password = cassandra" >> {0}/.cassandra/cqlshrc'.format(home))
-	# # Download schema
-	# # Install npm packages
+	### Enable auth ###
+	os.system('mkdir {0}/.cassandra'.format(home))
+	os.system('touch {0}/.cassandra/cqlshrc'.format(home))
+	os.system('echo "[authentication]" >> {0}/.cassandra/cqlshrc'.format(home))
+	os.system('echo "username = cassandra" >> {0}/.cassandra/cqlshrc'.format(home))
+	os.system('echo "password = cassandra" >> {0}/.cassandra/cqlshrc'.format(home))
+	
 
 
 
