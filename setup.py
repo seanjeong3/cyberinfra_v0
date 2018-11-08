@@ -13,11 +13,12 @@ def read_arg():
 	return sys.argv[1]
 
 
-def read_param():
+def prepare_param():
 	param = json.loads(open("setup.json").read())
 	if param["data_repo_path"][0] != "/":
 		param["data_repo_path"] = "{0}/{1}".format(os.getcwd(),param["data_repo_path"])
 	param["current_path"] = os.getcwd()
+	param["storage_path"] = "{0}/storage".format(os.getcwd())
 	param["cassandra_path"] = "{0}/storage/apache-cassandra-3.7".format(os.getcwd())
 	return param
 
@@ -52,7 +53,7 @@ def InstallCassandra(param):
 	os.system('pip install cassandra-driver')
 
 	### Unzip Cassandra
-	os.system('tar -zxvf storage/apache-cassandra-3.7-bin.tar.gz -C')
+	os.system('tar -zxvf storage/apache-cassandra-3.7-bin.tar.gz -C {0}'.format(param["storage_path"]))
 	os.system('sudo chown -R $USER:$GROUP {0}'.format(param["cassandra_path"]))
 
 	### Create Cassandra DB data repository folder ###
@@ -117,8 +118,8 @@ def InstallCassandra(param):
 if __name__ == '__main__':
 	# Read command line argument
 	arg = read_arg()
-	# Read install parameters from JSON file "setup.json"
-	param = read_param()
+	# Prepare install parameters and read params from JSON file "setup.json"
+	param = prepare_param()
 	# Give user warning.
 	_ = give_user_warning(arg, param)
 	if arg == "install":
