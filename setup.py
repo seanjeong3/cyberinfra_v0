@@ -59,6 +59,7 @@ def install_cassandra(param):
 	os.system('sudo chown -R $USER:$GROUP {0}'.format(param["cassandra_path"]))
 
 	### Create Cassandra DB data repository folder ###
+	os.system('sudo rm -rf {0}'.format(param["data_repo_path"]))
 	os.system('sudo mkdir -p {0}'.format(param["data_repo_path"]))
 	os.system('sudo chown -R $USER:$GROUP {0}'.format(param["data_repo_path"]))
 
