@@ -20,7 +20,7 @@ def prepare_param():
 		param["data_repo_path"] = "{0}/{1}".format(os.getcwd(),param["data_repo_path"])
 	param["current_path"] = os.getcwd()
 	param["storage_path"] = "{0}/storage".format(os.getcwd())
-	param["cassandra_path"] = "{0}/storage/apache-cassandra-3.7".format(os.getcwd())
+	param["cassandra_path"] = "{0}/storage/apache-cassandra-3.9".format(os.getcwd())
 	param["ip_address"] = socket.gethostbyname(socket.gethostname())
 	param["listen_address"] = 'localhost'
 	return param
@@ -59,7 +59,7 @@ def install_cassandra(param):
 	os.system('pip install cassandra-driver')
 
 	### Unzip Cassandra
-	os.system('tar -zxvf storage/apache-cassandra-3.7-bin.tar.gz -C {0}'.format(param["storage_path"]))
+	os.system('tar -zxvf storage/apache-cassandra-3.9-bin.tar.gz -C {0}'.format(param["storage_path"]))
 	os.system('sudo chown -R $USER:$GROUP {0}'.format(param["cassandra_path"]))
 
 	### Create Cassandra DB data repository folder ###
@@ -102,7 +102,7 @@ def install_cassandra(param):
 
 	# ### Export Cassandra path ###
 	# os.system('export CQLSH_NO_BUNDLED=true')
-	# os.system('export PATH="/opt/apache-cassandra-3.7/bin:$PATH"')
+	# os.system('export PATH="/opt/apache-cassandra-3.9/bin:$PATH"')
 
 	### Make session keep alive ###
 	os.system('sudo sysctl -w net.ipv4.tcp_keepalive_time=60 net.ipv4.tcp_keepalive_probes=3 net.ipv4.tcp_keepalive_intvl=10')
