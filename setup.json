@@ -1,0 +1,4 @@
+{
+	"cluster_name": "cyberinfracluster",
+	"data_repo_path": "storage/apache-cassandra-3.7/data"
+}
