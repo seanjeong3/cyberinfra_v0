@@ -43,13 +43,13 @@ def give_user_warning(arg, param):
 
 
 ##### Install Dependencies #####
-def InstallDependency():
+def install_dependency():
 	os.system('sudo apt-get update')
 	os.system('sudo apt install openjdk-8-jre-headless')
 
 
 ##### Cassandra setup #####
-def InstallCassandra(param):
+def install_cassandra(param):
 	### Install pacakages required by Cassandra DB ###
 	os.system('sudo apt install python-pip')
 	os.system('pip install cassandra-driver')
@@ -93,7 +93,7 @@ def InstallCassandra(param):
 	filedata = filedata.replace('batch_size_fail_threshold_in_kb: 50', 'batch_size_fail_threshold_in_kb: 50000')
 	filedata += '\n'
 	filedata += 'auto_bootstrap: false'
-	with open('{0}/conf/cassandra.yaml'.format(param["cassandra_path"]), 'r') as f :
+	with open('{0}/conf/cassandra.yaml'.format(param["cassandra_path"]), 'w') as f :
 		f.write(filedata)
 
 	# ### Export Cassandra path ###
@@ -124,8 +124,8 @@ if __name__ == '__main__':
 	# Give user warning.
 	_ = give_user_warning(arg, param)
 	if arg == "install":
-		InstallDependency()
-		InstallCassandra(param)
+		install_dependency()
+		install_cassandra(param)
 
 		
 
