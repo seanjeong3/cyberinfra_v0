@@ -100,9 +100,11 @@ def install_cassandra(param):
 	with open('{0}/conf/cassandra.yaml'.format(param["cassandra_path"]), 'w') as f :
 		f.write(filedata)
 
-	# ### Export Cassandra path ###
-	# os.system('export CQLSH_NO_BUNDLED=true')
-	# os.system('export PATH="/opt/apache-cassandra-3.9/bin:$PATH"')
+	### Export Cassandra path ###
+	os.system('export CQLSH_NO_BUNDLED=true')
+	os.system('export PATH="{0}/bin:$PATH"'.format(param["cassandra_path"]))
+	# os.system('echo  "export CQLSH_NO_BUNDLED=true" >> ~/.profile')
+	# os.system('echo  "export PATH=\"{0}/bin:\$PATH\"" >> ~/.profile'.format(param["cassandra_path"]))
 
 	### Make session keep alive ###
 	os.system('sudo sysctl -w net.ipv4.tcp_keepalive_time=60 net.ipv4.tcp_keepalive_probes=3 net.ipv4.tcp_keepalive_intvl=10')
