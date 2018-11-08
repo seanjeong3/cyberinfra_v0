@@ -108,7 +108,7 @@ def install_cassandra(param):
 	os.system('sudo sysctl -w net.ipv4.tcp_keepalive_time=60 net.ipv4.tcp_keepalive_probes=3 net.ipv4.tcp_keepalive_intvl=10')
 
 	### Enable auth ###
-	os.system('mkdir {0}/.cassandra'.format(param["home_path"]))
+	os.system('mkdir -p {0}/.cassandra'.format(param["home_path"]))
 	os.system('touch {0}/.cassandra/cqlshrc'.format(param["home_path"]))
 	os.system('echo "[authentication]" >> {0}/.cassandra/cqlshrc'.format(param["home_path"]))
 	os.system('echo "username = cassandra" >> {0}/.cassandra/cqlshrc'.format(param["home_path"]))
