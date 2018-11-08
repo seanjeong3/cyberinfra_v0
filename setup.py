@@ -14,6 +14,7 @@ def read_arg():
 
 
 def prepare_param():
+	param["home_path"] = os.path.expanduser('~')
 	param = json.loads(open("setup.json").read())
 	if param["data_repo_path"][0] != "/":
 		param["data_repo_path"] = "{0}/{1}".format(os.getcwd(),param["data_repo_path"])
