@@ -50,6 +50,9 @@ def install_dependency():
 
 ##### Cassandra setup #####
 def install_cassandra(param):
+	### Remove path ###
+	os.system('sudo rm -rf {0}'.format(param["cassandra_path"]))
+
 	### Install pacakages required by Cassandra DB ###
 	os.system('sudo apt install python-pip')
 	os.system('pip install cassandra-driver')
@@ -59,7 +62,6 @@ def install_cassandra(param):
 	os.system('sudo chown -R $USER:$GROUP {0}'.format(param["cassandra_path"]))
 
 	### Create Cassandra DB data repository folder ###
-	os.system('sudo rm -rf {0}'.format(param["data_repo_path"]))
 	os.system('sudo mkdir -p {0}'.format(param["data_repo_path"]))
 	os.system('sudo chown -R $USER:$GROUP {0}'.format(param["data_repo_path"]))
 
