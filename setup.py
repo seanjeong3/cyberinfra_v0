@@ -118,7 +118,7 @@ def install_cassandra(param):
 	
 
 ##### Node.js Setup #####
-def InstallNodejs():
+def install_nodejs():
 	os.system('curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -')
 	os.system('sudo apt-get install -y nodejs')
 	os.system('sudo apt install npm')
