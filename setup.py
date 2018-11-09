@@ -16,13 +16,16 @@ def read_arg():
 def prepare_param():
 	param = json.loads(open("setup.json").read())
 	param["home_path"] = os.path.expanduser('~')
+	param["ip_address"] = socket.gethostbyname(socket.gethostname())
+	param["listen_address"] = 'localhost'
+	
 	if param["data_repo_path"][0] != "/":
 		param["data_repo_path"] = "{0}/{1}".format(os.getcwd(),param["data_repo_path"])
 	param["current_path"] = os.getcwd()
 	param["storage_path"] = "{0}/storage".format(os.getcwd())
 	param["cassandra_path"] = "{0}/storage/apache-cassandra-3.9".format(os.getcwd())
-	param["ip_address"] = socket.gethostbyname(socket.gethostname())
-	param["listen_address"] = 'localhost'
+	param["webserver_path"] = "{0}/communication/webServer".format(os.getcwd())
+
 	return param
 
 
@@ -123,9 +126,9 @@ def install_nodejs():
 	os.system('sudo apt-get install -y nodejs')
 	os.system('sudo apt install npm')
 
-	print("steel working!")
 
-
+def install_webserver(param):
+	os.system('npm install --prefix {0}'.format(param["webserver_path"]))
 
 
 if __name__ == '__main__':
@@ -139,6 +142,7 @@ if __name__ == '__main__':
 		install_dependency()
 		install_cassandra(param)
 		install_nodejs()
+		install_webserver(param)
 
 		
 
