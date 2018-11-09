@@ -109,7 +109,7 @@ def install_cassandra(param):
 	### Make session keep alive ###
 	os.system('sudo sysctl -w net.ipv4.tcp_keepalive_time=60 net.ipv4.tcp_keepalive_probes=3 net.ipv4.tcp_keepalive_intvl=10')
 
-	### Enable auth ###
+	### Enable auth (default id: cassandra, default pw: cassandra) ###
 	os.system('mkdir -p {0}/.cassandra'.format(param["home_path"]))
 	os.system('touch {0}/.cassandra/cqlshrc'.format(param["home_path"]))
 	os.system('echo "[authentication]" >> {0}/.cassandra/cqlshrc'.format(param["home_path"]))
@@ -117,6 +117,11 @@ def install_cassandra(param):
 	os.system('echo "password = cassandra" >> {0}/.cassandra/cqlshrc'.format(param["home_path"]))
 	
 
+##### Node.js Setup #####
+def InstallNodejs():
+	os.system('curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -')
+	os.system('sudo apt-get install -y nodejs')
+	os.system('sudo apt install npm')
 
 
 
@@ -131,6 +136,7 @@ if __name__ == '__main__':
 	if arg == "install":
 		install_dependency()
 		install_cassandra(param)
+		install_nodejs()
 
 		
 
